@@ -61,6 +61,7 @@ void World::reset_opengl(Level &l) {
     for (u32 i = 0; i < l.total; i++) {
         ivec2 pos = ivec2_from_idx(i, l.width);
         TILE tile = get(pos);
+        printf("%d\n", tile);
 
         set_cube(*this, cube, lattice, i, pos, tile_get_uvs(tile), (int)level_width);
     }
