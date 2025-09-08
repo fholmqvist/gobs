@@ -22,6 +22,11 @@ bool Game::init() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+    const auto ar = aspect_ratio(SCREEN_W, SCREEN_H);
+    if(ar.first != 4 || ar.second != 3) {
+        throw std::runtime_error(frmt("Illegal screen resolution %d:%d", ar.first, ar.second));
+    }
+
     WINDOW = SDL_CreateWindow("GOBS", SCREEN_W, SCREEN_H, SDL_WINDOW_OPENGL);
     if (!WINDOW) {
         SDL_Log("SDL_CreateWindow Error: %s\n", SDL_GetError());

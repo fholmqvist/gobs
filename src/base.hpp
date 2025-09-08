@@ -2,6 +2,8 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
+#include <utility>
 
 typedef int8_t i8;
 typedef int16_t i16;
@@ -18,3 +20,6 @@ typedef ptrdiff_t size;
 typedef size_t usize;
 
 typedef u64 ID;
+
+std::string frmt(const char* fmt, ...);
+std::pair<int, int> aspect_ratio(int width, int height);
