@@ -9,7 +9,7 @@
 extern Shader world_shader;
 
 struct World {
-    std::vector<Tile> grid;
+    std::vector<TILE> grid;
     Shader shader;
     usize level_width;
 
@@ -17,6 +17,6 @@ struct World {
 
     World() : shader(world_shader) {};
 
-    Tile get(ivec2 pos);
+    TILE get(ivec2 pos);
     void reset_opengl(Level &);
 };

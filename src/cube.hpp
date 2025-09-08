@@ -1,5 +1,10 @@
 #pragma once
 
+#include "indexed_verts.hpp"
+#include "tile_uv.hpp"
+#include "vertices.hpp"
+#include "world.hpp"
+
 // clang-format off
 #define N_VERTS_PER_FACE   4
 #define N_FACES            6
@@ -8,7 +13,7 @@
 #define N_INDICES          (N_FACES * N_INDICES_PER_FACE)
 #define VERT_STRIDE        (size)sizeof(WorldVertex)
 #define CUBE_VERTICES      (usize)(VERT_STRIDE * N_VERTS_PER_FACE * FACE_DIR_COUNT)
-#define CUBE_INDICES       (usize)(N_INDICES_PER_FACE * (usize)FaceDir::FACE_DIR_COUNT)
+#define CUBE_INDICES       (usize)(N_INDICES_PER_FACE * (usize)FACE_DIR::COUNT)
 #define FLOATS_PER_VERTEX  (u32)(sizeof(WorldVertex) / sizeof(float))
 
 #define FRONT_FACE_IDX     0
@@ -19,13 +24,28 @@
 #define GROUND_FACE_IDX    20
 // clang-format on
 
-enum struct FaceDir : u8 {
-    FACE_DIR_NONE,
-    FACE_DIR_FRONT,
-    FACE_DIR_BACK,
-    FACE_DIR_LEFT,
-    FACE_DIR_RIGHT,
-    FACE_DIR_TOP,
-    FACE_DIR_GROUND,
-    FACE_DIR_COUNT
+enum struct FACE_DIR : u8 {
+    NONE,
+    FRONT,
+    BACK,
+    LEFT,
+    RIGHT,
+    TOP,
+    GROUND,
+    COUNT
+};
+
+struct Cube {
+    std::array<WorldVertex, N_VERTS_PER_CUBE> verts;
+    std::array<u8, N_INDICES> indices;
+    u32 idx;
+
+    void init(TileUV uv, u32 idx, int wsize);
+    void reset(TileUV uv, u32 idx, int wsize);
+    void on(FACE_DIR dir);
+    void off(FACE_DIR dir);
+    void set_uv(FACE_DIR dir, TileUV uv, int wsize);
+    void offset(float x, float y, float z);
+    void add_verts_and_indices(IndexedVerts &grid);
+    void fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize);
 };

@@ -7,6 +7,9 @@ extern const int SCREEN_H;
 
 extern const u8 CSIZE;
 
+extern const float SHADOW_STRENGTH;
+extern const float WATER_LEVEL;
+
 #define XY_TO_IDX(x, y) ((usize)(x % WSIZE) + (usize)(y * WSIZE))
 #define TO_GRID(x) ((int)(floorf(x) / CSIZE))
 

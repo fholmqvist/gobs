@@ -32,7 +32,7 @@ Shader world_shader = Shader(
         glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, stride, (void*)(10 * sizeof(float)));
     });
 
-Tile World::get(ivec2 pos) {
+TILE World::get(ivec2 pos) {
     return grid[ivec2_to_idx(pos, level_width)];
 }
 
@@ -44,7 +44,7 @@ void World::reset_opengl(Level &l) {
 
     for (u32 i = 0; i < l.total; i++) {
         ivec2 pos = ivec2_from_idx(i, l.width);
-        Tile tile = get(pos);
+        TILE tile = get(pos);
 
         // set_cube(cube, lattice, i, pos, tile_get_uvs(tile));
     }
