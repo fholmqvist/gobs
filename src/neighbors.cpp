@@ -1,11 +1,11 @@
-#include "nbs.hpp"
+#include "neighbors.hpp"
 
 #include "ivec2.hpp"
 #include "tile.hpp"
 
-std::bitset<8> nbs_check(std::vector<TILE> &grid, int wsize, ivec2 pos,
-                         std::function<bool(TILE)> check) {
-    std::bitset<8> nbs;
+Neighbors Neighbors::check(std::vector<TILE> &grid, int wsize, ivec2 pos,
+                           std::function<bool(TILE)> check) {
+    Neighbors nbs;
 
     for (size i = 0; i < 8; i++) {
         auto nb = pos + (ivec2){ directions[i][0], directions[i][1] };
@@ -13,7 +13,7 @@ std::bitset<8> nbs_check(std::vector<TILE> &grid, int wsize, ivec2 pos,
             continue;
         }
         if (check(grid[ivec2_to_idx(nb, wsize)])) {
-            nbs.set(i, true);
+            nbs.nbs.set(i, true);
         }
     }
 
@@ -43,34 +43,38 @@ bool in_range(ivec2 pos, int wsize) {
     return pos[0] >= 0 && pos[0] < wsize && pos[1] >= 0 && pos[1] < wsize;
 }
 
-bool nbs_up(std::bitset<8> nb) {
-    return nb[0];
+bool Neighbors::any() {
+    return nbs.any();
 }
 
-bool nbs_right(std::bitset<8> nb) {
-    return nb[1];
+bool Neighbors::up() {
+    return nbs[0];
 }
 
-bool nbs_down(std::bitset<8> nb) {
-    return nb[2];
+bool Neighbors::right() {
+    return nbs[1];
 }
 
-bool nbs_left(std::bitset<8> nb) {
-    return nb[3];
+bool Neighbors::down() {
+    return nbs[2];
 }
 
-bool nbs_up_right(std::bitset<8> nb) {
-    return nb[4];
+bool Neighbors::left() {
+    return nbs[3];
 }
 
-bool nbs_down_right(std::bitset<8> nb) {
-    return nb[5];
+bool Neighbors::up_right() {
+    return nbs[4];
 }
 
-bool nbs_down_left(std::bitset<8> nb) {
-    return nb[6];
+bool Neighbors::down_right() {
+    return nbs[5];
 }
 
-bool nbs_up_left(std::bitset<8> nb) {
-    return nb[7];
+bool Neighbors::down_left() {
+    return nbs[6];
+}
+
+bool Neighbors::up_left() {
+    return nbs[7];
 }

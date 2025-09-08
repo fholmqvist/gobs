@@ -1,8 +1,9 @@
 #include "world.hpp"
+
+#include "constants.hpp"
 #include "cube.hpp"
 #include "ivec2.hpp"
 #include "lattice.hpp"
-#include <glm/fwd.hpp>
 
 Shader world_shader = Shader(
     "assets/shaders/grid_vs.glsl", "assets/shaders/grid_fs.glsl", [](Shader &s, Level &level) {
@@ -46,7 +47,7 @@ TILE World::get(ivec2 pos) {
     return grid[ivec2_to_idx(pos, level_width)];
 }
 
-void set_cube(World& world, Cube& c, Lattice& l, u32 i, ivec2 pos, TileUV uv, int wsize);
+void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize);
 
 void World::reset_opengl(Level &l) {
     verts.verts.clear();
@@ -75,76 +76,79 @@ void World::reset_opengl(Level &l) {
     shader.unbind();
 }
 
-void set_cube(World& world, Cube& c, Lattice& l, u32 i, ivec2 pos, TileUV uv, int wsize) {
+void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize) {
     c.reset(uv, i, wsize);
 
     TILE tile = world.grid[i];
-    u8 walls = nbs_walls(&world->grid, pos);
+    Neighbors walls = Neighbors::check(world.grid, wsize, pos,
+                                       [](TILE t) { return t == TILE::BRICK || t == TILE::ROCK; });
 
     if (tile == TILE::ROCK_GROUND || tile == TILE::BRICK_GROUND || tile == TILE::WATER_GROUND) {
-        cube_on(c, FACE_DIR::GROUND);
+        c.on(FACE_DIR::GROUND);
     } else {
-        cube_on(c, FACE_DIR::TOP);
+        c.on(FACE_DIR::TOP);
 
-        if (!nbs_up(walls)) {
-            cube_on(c, FACE_DIR::BACK);
+        if (!walls.up()) {
+            c.on(FACE_DIR::BACK);
             if (pos[1] == 0) {
-                c->verts[4].color = 0;
-                c->verts[7].color = 0;
+                c.verts[4].color = 0;
+                c.verts[7].color = 0;
             }
         }
-        if (!nbs_right(walls)) {
-            cube_on(c, FACE_DIR::RIGHT);
-            if (pos[0] == WSIZE - 1) {
-                c->verts[12].color = 0;
-                c->verts[15].color = 0;
+        if (!walls.right()) {
+            c.on(FACE_DIR::RIGHT);
+            if (pos[0] == wsize - 1) {
+                c.verts[12].color = 0;
+                c.verts[15].color = 0;
             }
         }
-        if (!nbs_down(walls)) {
-            cube_on(c, FACE_DIR_FRONT);
-            if (pos[1] == WSIZE - 1) {
-                c->verts[0].color = 0;
-                c->verts[3].color = 0;
+        if (!walls.down()) {
+            c.on(FACE_DIR::FRONT);
+            if (pos[1] == wsize - 1) {
+                c.verts[0].color = 0;
+                c.verts[3].color = 0;
             }
         }
-        if (!nbs_left(walls)) {
-            cube_on(c, FACE_DIR_LEFT);
+        if (!walls.left()) {
+            c.on(FACE_DIR::LEFT);
             if (pos[0] == 0) {
-                c->verts[8].color = 0;
-                c->verts[11].color = 0;
+                c.verts[8].color = 0;
+                c.verts[11].color = 0;
             }
         }
     }
 
-    l.from_world_vertices(l, c->verts, true);
+    l.from_world_vertices(c.verts, true);
 
     const float y_offset = 0.0f;
-    lattice_add_slope_perlin(l, V3((float)pos[0], 0, (float)pos[1]), y_offset,
-                             PERLIN_DEFAULT_STRENGTH);
+    l.add_slope_perlin(vec3{ (float)pos[0], 0, (float)pos[1] }, y_offset,
+                       1.0f); // TODO
+                              // PERLIN_DEFAULT_STRENGTH);
 
-    u8 water = nbs_water(&world->grid, pos);
+    Neighbors water =
+        Neighbors::check(world.grid, wsize, pos, [](TILE t) { return t == TILE::WATER_GROUND; });
 
     const float WATER_DEPTH = WATER_LEVEL * 2.4f;
-    if (tile == TILE_WATER_GROUND) {
-        lattice_add_offset(l, WATER_DEPTH);
+    if (tile == TILE::WATER_GROUND) {
+        l.add_offset(WATER_DEPTH);
     } else {
-        lattice_match_liquid_level(l, water, WATER_DEPTH);
+        l.match_liquid_level(water, WATER_DEPTH);
     }
 
-    lattice_apply_to_cube(l, c);
+    l.apply_to_cube(c);
 
-    if (tile == TILE_WATER_GROUND) {
+    if (tile == TILE::WATER_GROUND) {
         // Make water corners rounded.
-        cube_is_water(c, walls, water, 0.1f);
-    } else if (water > 0) {
+        c.is_water(walls, water, 0.1f);
+    } else if (water.any()) {
         // Meet rounded corners where they exist.
         // Add shadows.
-        cube_is_adjacent_to_water(c, walls, water, 0.1f);
+        c.is_adjacent_to_water(walls, water, 0.1f);
     }
 
-    cube_shade_unshaded_corners(c, walls);
+    c.shade_unshaded_corners(walls);
 
-    cube_fix_nbs_wall_uvs(c, world, walls);
+    c.fix_nbs_wall_uvs(world, walls, wsize);
 
-    cube_add_verts_and_indices(c, &world->verts);
+    c.add_verts_and_indices(world.verts);
 }

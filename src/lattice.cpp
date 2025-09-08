@@ -1,6 +1,7 @@
 #include "lattice.hpp"
 
-#include "nbs.hpp"
+#include "cube.hpp"
+#include "neighbors.hpp"
 // #include "perlin.h"
 #include "vec2.hpp"
 
@@ -49,7 +50,7 @@ void Lattice::from_vertices(std::vector<Vertex> &vs, bool cube) {
     init_vertices();
 }
 
-void Lattice::from_world_vertices(WorldVertex vs[N_VERTS_PER_CUBE], bool cube) {
+void Lattice::from_world_vertices(std::array<WorldVertex, N_VERTS_PER_CUBE> &vs, bool cube) {
     if (cube) {
         bb_min = vec3(-0.5f, -0.5f, -0.5f);
         bb_max = vec3(0.5f, 0.5f, 0.5f);
@@ -133,7 +134,7 @@ void Lattice::add_offset(float amount) {
     // vertices[dlf()][1] += amount;
 }
 
-void Lattice::match_liquid_level(u8 nbs, float amount) {
+void Lattice::match_liquid_level(Neighbors nbs, float amount) {
     // if (nbs_up(nbs)) {
     //     vertices[dlb()][1] += amount;
     //     vertices[drb()][1] += amount;

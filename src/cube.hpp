@@ -1,7 +1,7 @@
 #pragma once
 
 #include "indexed_verts.hpp"
-#include "lattice.hpp"
+#include "neighbors.hpp"
 #include "tile_uv.hpp"
 #include "vertices.hpp"
 #include "world.hpp"
@@ -49,4 +49,8 @@ struct Cube {
     void offset(float x, float y, float z);
     void add_verts_and_indices(IndexedVerts &grid);
     void fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize);
+    void is_water(Neighbors walls, Neighbors water, float amount);
+    void is_adjacent_to_water(Neighbors walls, Neighbors water, float amount);
+    void shade_unshaded_corners(Neighbors walls);
+    void fix_nbs_wall_uvs(World &world, Neighbors walls, int wsize);
 };

@@ -4,7 +4,6 @@
 #include "constants.hpp"
 #include "indexed_verts.hpp"
 #include "ivec2.hpp"
-#include "nbs.hpp"
 #include "tile.hpp"
 #include "world.hpp"
 
@@ -128,9 +127,9 @@ void Cube::add_verts_and_indices(IndexedVerts &grid) {
     }
 }
 
-void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
+void Cube::is_water(Neighbors walls, Neighbors water, float amount) {
     // TL
-    if (!nbs_up_left(walls) && !nbs_up_left(water) && nbs_right(water) && nbs_down(water)) {
+    if (!walls.up_left() && !water.up_left() && water.right() && water.down()) {
         verts[20].pos[0] += amount * 0.7f;
         verts[20].pos[2] += amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
@@ -138,7 +137,7 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[23].color = SHADOW_STRENGTH;
     }
     // TR
-    if (!nbs_up_right(walls) && !nbs_up_right(water) && nbs_left(water) && nbs_down(water)) {
+    if (!walls.up_right() && !water.up_right() && water.left() && water.down()) {
         verts[21].pos[0] -= amount * 0.7f;
         verts[21].pos[2] += amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
@@ -146,7 +145,7 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[22].color = SHADOW_STRENGTH;
     }
     // BR
-    if (!nbs_down_right(walls) && !nbs_down_right(water) && nbs_left(water) && nbs_up(water)) {
+    if (!walls.down_right() && !water.down_right() && water.left() && water.up()) {
         verts[22].pos[0] -= amount * 0.7f;
         verts[22].pos[2] -= amount * 0.7f;
         verts[21].color = SHADOW_STRENGTH;
@@ -154,7 +153,7 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[23].color = SHADOW_STRENGTH;
     }
     // BL
-    if (!nbs_down_left(walls) && !nbs_down_left(water) && nbs_right(water) && nbs_up(water)) {
+    if (!walls.down_left() && !water.down_left() && water.right() && water.up()) {
         verts[23].pos[0] += amount * 0.7f;
         verts[23].pos[2] -= amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
@@ -162,7 +161,7 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[23].color = SHADOW_STRENGTH;
     }
     // T
-    if (!nbs_up(walls) && !nbs_up(water) && nbs_left(water) && nbs_right(water)) {
+    if (!walls.up() && !water.up() && water.left() && water.right()) {
         verts[20].pos[0] -= amount * 0.7f;
         verts[20].pos[2] -= amount * 0.7f;
         verts[21].pos[0] += amount * 0.7f;
@@ -171,7 +170,7 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[23].color = 1.0f;
     }
     // R
-    if (!nbs_right(walls) && !nbs_right(water) && nbs_up(water) && nbs_down(water)) {
+    if (!walls.right() && !water.right() && water.up() && water.down()) {
         verts[21].pos[0] += amount * 0.7f;
         verts[21].pos[2] -= amount * 0.7f;
         verts[22].pos[0] += amount * 0.7f;
@@ -180,7 +179,7 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[23].color = 1.0f;
     }
     // D
-    if (!nbs_down(walls) && !nbs_down(water) && nbs_left(water) && nbs_right(water)) {
+    if (!walls.down() && !water.down() && water.left() && water.right()) {
         verts[22].pos[0] += amount * 0.7f;
         verts[22].pos[2] += amount * 0.7f;
         verts[23].pos[0] -= amount * 0.7f;
@@ -189,7 +188,7 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[21].color = 1.0f;
     }
     // L
-    if (!nbs_left(walls) && !nbs_left(water) && nbs_up(water) && nbs_down(water)) {
+    if (!walls.left() && !water.left() && water.up() && water.down()) {
         verts[20].pos[0] -= amount * 0.7f;
         verts[20].pos[2] -= amount * 0.7f;
         verts[23].pos[0] -= amount * 0.7f;
@@ -199,28 +198,28 @@ void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
     }
 }
 
-void cube_is_adjacent_to_water(Cube* c, u8 walls, u8 water, float amount) {
+void Cube::is_adjacent_to_water(Neighbors walls, Neighbors water, float amount) {
     // TL CORNER, CORNER QUAD
-    if (nbs_down_right(water) && !nbs_right(water) && !nbs_down(water)) {
+    if (water.down_right() && !water.right() && !water.down()) {
         verts[22].pos[0] += amount * 0.7f;
         verts[22].pos[2] += amount * 0.7f;
         verts[22].color = SHADOW_STRENGTH;
     }
     // TL CORNER, QUAD ABOVE
-    if (nbs_down(water) && !nbs_down_left(water) && !nbs_left(water)) {
+    if (water.down() && !water.down_left() && !water.left()) {
         verts[23].pos[0] += amount * 0.7f;
         verts[23].pos[2] += amount * 0.7f;
         verts[22].color = SHADOW_STRENGTH;
         verts[23].color = SHADOW_STRENGTH;
     }
     // TOP
-    if (nbs_down(water) && !nbs_up(water)) {
+    if (water.down() && !water.up()) {
         verts[22].color = SHADOW_STRENGTH;
         verts[23].color = SHADOW_STRENGTH;
     }
     // TR CORNER, QUAD ABOVE
-    if (nbs_down(water) && !nbs_down_right(water) && !nbs_right(water)) {
-        if (!nbs_right(walls)) {
+    if (water.down() && !water.down_right() && !water.right()) {
+        if (!walls.right()) {
             verts[22].pos[0] -= amount * 0.7f;
         }
         verts[22].pos[2] += amount * 0.7f;
@@ -228,77 +227,77 @@ void cube_is_adjacent_to_water(Cube* c, u8 walls, u8 water, float amount) {
         verts[23].color = SHADOW_STRENGTH;
     }
     // TR CORNER, CORNER QUAD
-    if (nbs_down_left(water) && !nbs_left(water) && !nbs_down(water)) {
+    if (water.down_left() && !water.left() && !water.down()) {
         verts[23].pos[0] -= amount * 0.7f;
         verts[23].pos[2] += amount * 0.7f;
         verts[23].color = SHADOW_STRENGTH;
     }
     // TR CORNER, RIGHT QUAD
-    if (nbs_left(water) && !nbs_up_left(water) && !nbs_down(water)) {
+    if (water.left() && !water.up_left() && !water.down()) {
         verts[20].pos[0] -= amount * 0.7f;
         verts[20].pos[2] += amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
         verts[23].color = SHADOW_STRENGTH;
     }
     // RIGHT
-    if (nbs_left(water) && !nbs_right(water)) {
+    if (water.left() && !water.right()) {
         verts[20].color = SHADOW_STRENGTH;
         verts[23].color = SHADOW_STRENGTH;
     }
     // BR CORNER, RIGHT QUAD
-    if (nbs_left(water) && !nbs_down_left(water) && !nbs_up(water)) {
+    if (water.left() && !water.down_left() && !water.up()) {
         verts[23].pos[0] -= amount * 0.7f;
         verts[23].pos[2] -= amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
         verts[23].color = SHADOW_STRENGTH;
     }
     // BR CORNER, CORNER QUAD
-    if (nbs_up_left(water) && !nbs_left(water) && !nbs_up(water)) {
+    if (water.up_left() && !water.left() && !water.up()) {
         verts[20].pos[0] -= amount * 0.7f;
         verts[20].pos[2] -= amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
     }
     // BR CORNER, QUAD BELOW
-    if (nbs_up(water) && !nbs_up_right(water) && !nbs_right(water)) {
+    if (water.up() && !water.up_right() && !water.right()) {
         verts[21].pos[0] -= amount * 0.7f;
         verts[21].pos[2] -= amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
         verts[21].color = SHADOW_STRENGTH;
     }
     // DOWN
-    if (nbs_up(water) && !nbs_down(water)) {
+    if (water.up() && !water.down()) {
         verts[20].color = SHADOW_STRENGTH;
         verts[21].color = SHADOW_STRENGTH;
     }
     // BL CORNER, QUAD BELOW
-    if (nbs_up(water) && !nbs_up_left(water) && !nbs_left(water)) {
+    if (water.up() && !water.up_left() && !water.left()) {
         verts[20].pos[0] += amount * 0.7f;
         verts[20].pos[2] -= amount * 0.7f;
         verts[20].color = SHADOW_STRENGTH;
         verts[21].color = SHADOW_STRENGTH;
     }
     // BL CORNER, CORNER QUAD
-    if (nbs_up_right(water) && !nbs_up(water) && !nbs_right(water)) {
+    if (water.up_right() && !water.up() && !water.right()) {
         verts[21].pos[0] += amount * 0.7f;
         verts[21].pos[2] -= amount * 0.7f;
         verts[21].color = SHADOW_STRENGTH;
     }
     // BL CORNER, QUAD LEFT
-    if (nbs_right(water) && !nbs_down_right(water) && !nbs_down(water)) {
+    if (water.right() && !water.down_right() && !water.down()) {
         verts[22].pos[0] += amount * 0.7f;
-        if (!nbs_down(walls)) {
+        if (!walls.down()) {
             verts[22].pos[2] -= amount * 0.7f;
         }
         verts[21].color = SHADOW_STRENGTH;
         verts[22].color = SHADOW_STRENGTH;
     }
     // LEFT
-    if (nbs_right(water) && !nbs_left(water)) {
+    if (water.right() && !water.left()) {
         verts[21].color = SHADOW_STRENGTH;
         verts[22].color = SHADOW_STRENGTH;
     }
     // TL CORNER, QUAD LEFT
-    if (nbs_right(water) && !nbs_up_right(water) && !nbs_up(water)) {
+    if (water.right() && !water.up_right() && !water.up()) {
         verts[21].pos[0] += amount * 0.7f;
         verts[21].pos[2] += amount * 0.7f;
         verts[21].color = SHADOW_STRENGTH;
@@ -306,34 +305,34 @@ void cube_is_adjacent_to_water(Cube* c, u8 walls, u8 water, float amount) {
     }
 }
 
-void cube_shade_unshaded_corners(Cube* c, u8 walls) {
+void Cube::shade_unshaded_corners(Neighbors walls) {
     const float BRIGHT_SHADOW = 0.65f;
-    if (nbs_up(walls)) {
+    if (walls.up()) {
         verts[20].color = min(BRIGHT_SHADOW, verts[20].color);
         verts[21].color = min(BRIGHT_SHADOW, verts[21].color);
     }
-    if (nbs_up_right(walls)) {
+    if (walls.up_right()) {
         verts[21].color = min(BRIGHT_SHADOW, verts[21].color);
     }
-    if (nbs_right(walls)) {
+    if (walls.right()) {
         verts[21].color = min(BRIGHT_SHADOW, verts[21].color);
         verts[22].color = min(BRIGHT_SHADOW, verts[22].color);
     }
-    if (nbs_down_right(walls)) {
+    if (walls.down_right()) {
         verts[22].color = min(BRIGHT_SHADOW, verts[22].color);
     }
-    if (nbs_down(walls)) {
+    if (walls.down()) {
         verts[22].color = min(BRIGHT_SHADOW, verts[22].color);
         verts[23].color = min(BRIGHT_SHADOW, verts[23].color);
     }
-    if (nbs_down_left(walls)) {
+    if (walls.down_left()) {
         verts[23].color = min(BRIGHT_SHADOW, verts[23].color);
     }
-    if (nbs_left(walls)) {
+    if (walls.left()) {
         verts[20].color = min(BRIGHT_SHADOW, verts[20].color);
         verts[23].color = min(BRIGHT_SHADOW, verts[23].color);
     }
-    if (nbs_up_left(walls)) {
+    if (walls.up_left()) {
         verts[20].color = min(BRIGHT_SHADOW, verts[20].color);
     }
 }
@@ -386,10 +385,10 @@ void faces_for_uv(WorldVertex* vs, u32 idx, TileUV uv, int wsize) {
         (WorldVertex){ { -0.5f, -0.5f, 0.5f }, { 0, 1, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 1 };
 }
 
-void Cube::fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize) {
+void Cube::fix_nbs_wall_uvs(World &world, Neighbors walls, int wsize) {
     ivec2 vdx;
 
-    if (!nbs_up(walls)) {
+    if (!walls.up()) {
         vdx = ivec2_from_idx(idx, wsize);
         vdx[1]--;
         if (in_range(vdx, wsize)) {
@@ -397,7 +396,7 @@ void Cube::fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize) {
             set_uv(FACE_DIR::BACK, tile_get_matching_uvs(t), wsize);
         }
     }
-    if (!nbs_right(walls)) {
+    if (!walls.right()) {
         vdx = ivec2_from_idx(idx, wsize);
         vdx[0]++;
         if (in_range(vdx, wsize)) {
@@ -405,7 +404,7 @@ void Cube::fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize) {
             set_uv(FACE_DIR::RIGHT, tile_get_matching_uvs(t), wsize);
         }
     }
-    if (!nbs_down(walls)) {
+    if (!walls.down()) {
         vdx = ivec2_from_idx(idx, wsize);
         vdx[1]++;
         if (in_range(vdx, wsize)) {
@@ -413,7 +412,7 @@ void Cube::fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize) {
             set_uv(FACE_DIR::FRONT, tile_get_matching_uvs(t), wsize);
         }
     }
-    if (!nbs_left(walls)) {
+    if (!walls.left()) {
         vdx = ivec2_from_idx(idx, wsize);
         vdx[0]--;
         if (in_range(vdx, wsize)) {

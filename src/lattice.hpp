@@ -3,6 +3,7 @@
 #include "pch.hpp" // IWYU pragma: keep
 
 #include "cube.hpp"
+#include "neighbors.hpp"
 
 #define LATTICE_VERTS 8
 
@@ -15,12 +16,12 @@ struct Lattice {
     void init_vertices();
     void from_floats(std::vector<float> &vs, bool cube);
     void from_vertices(std::vector<Vertex> &vs, bool cube);
-    void from_world_vertices(WorldVertex vs[N_VERTS_PER_CUBE], bool cube);
+    void from_world_vertices(std::array<WorldVertex, N_VERTS_PER_CUBE> &vs, bool cube);
     void add_slope_perlin(vec3 pos, float y_offset, float y_scale);
     void add_distortion_perlin(vec3 pos);
     void apply_to_vertex(vec3 vert);
     void add_offset(float amount);
-    void match_liquid_level(u8 nbs, float amount);
+    void match_liquid_level(Neighbors nbs, float amount);
     void apply_to_cube(Cube &c);
     void deform_vertex(vec3 base_index, vec3 weights, vec3 out);
 
