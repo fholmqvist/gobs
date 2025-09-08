@@ -3,7 +3,7 @@
 #include "constants.hpp"
 #include "shader.hpp"
 
-void TextRenderer::init(uint32_t &existing_texture) {
+void TextRenderer::init(u32 &existing_texture) {
     assert(existing_texture);
 
     SHADER_ID = glCreateProgram();
@@ -13,7 +13,7 @@ void TextRenderer::init(uint32_t &existing_texture) {
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
 
-    compile_shaders(SHADER_ID, "shaders/text_vertex.glsl", "shaders/text_fragment.glsl");
+    compile_shaders(SHADER_ID, "assets/shaders/text_vs.glsl", "assets/shaders/text_fs.glsl");
 
     TEXTURE_ID = existing_texture;
 

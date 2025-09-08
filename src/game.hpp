@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.hpp"
+#include "gui.hpp"
 #include "input.hpp"
 #include "level.hpp"
 
@@ -13,6 +14,7 @@ struct Game {
 
   private:
     Input input;
+    GUI gui;
 
     bool DISABLE_SHADERS;
     SDL_Window* WINDOW;

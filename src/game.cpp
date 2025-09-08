@@ -57,6 +57,10 @@ bool Game::init() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
+    load_assets();
+
+    gui.init();
+
     running = true;
     return true;
 }
@@ -67,6 +71,7 @@ void Game::update(Level &l) {
     running = input.update();
 
     l.update();
+    gui.update();
 
     STATS.add_update_time(GLOBAL_TIMER.stop());
 }
@@ -75,6 +80,7 @@ void Game::render(Level &l) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     l.render();
+    gui.render();
 
     SDL_GL_SwapWindow(WINDOW);
 }
