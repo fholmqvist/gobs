@@ -35,6 +35,3 @@ extern u32 PIPE_TEXTURE;
 
 extern u32 SKAL_TEXTURE;
 extern u32 GOB_TEXTURE;
-
-#define SCENE_LIGHTS_MAX 512u
-#define OBJECT_LIGHTS_MAX 8u
