@@ -17,6 +17,8 @@ struct World {
 
     World() : shader(world_shader) {};
 
+    void init(Level& l);
+    void set(ivec2 pos, TILE t);
     TILE get(ivec2 pos);
     void reset_opengl(Level &);
 };

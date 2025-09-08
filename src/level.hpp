@@ -13,5 +13,4 @@ struct Level {
 
     void init(std::function<void(Level &l)> f);
     void update();
-    void render();
 };

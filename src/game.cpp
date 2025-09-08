@@ -80,7 +80,6 @@ void Game::render(Level &l) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     world.shader.render(l);
-    l.render();
     gui.render();
 
     SDL_GL_SwapWindow(WINDOW);

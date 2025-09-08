@@ -32,17 +32,26 @@ Shader world_shader = Shader(
         glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, stride, (void*)(10 * sizeof(float)));
     });
 
+void World::init(Level &l) {
+    level_width = l.width;
+    grid.reserve(l.total);
+}
+
+void World::set(ivec2 pos, TILE t) {
+    grid[ivec2_to_idx(pos, level_width)] = t;
+}
+
 TILE World::get(ivec2 pos) {
     return grid[ivec2_to_idx(pos, level_width)];
 }
 
 void World::reset_opengl(Level &l) {
-    level_width = l.width;
-
     verts.verts.clear();
     verts.verts.reserve(l.total * N_VERTS_PER_CUBE);
     verts.indices.clear();
     verts.indices.reserve(l.total * CUBE_INDICES);
+
+    Cube cube;
 
     for (u32 i = 0; i < l.total; i++) {
         ivec2 pos = ivec2_from_idx(i, l.width);
