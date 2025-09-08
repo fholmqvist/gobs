@@ -3,5 +3,5 @@
 struct Input {
     SDL_Event e;
 
-    bool update();
+    bool update(int wsize);
 };

@@ -69,7 +69,7 @@ bool Game::init() {
 void Game::update(Level &l) {
     GLOBAL_TIMER.reset();
 
-    running = input.update();
+    running = input.update(l.width);
     l.update();
     gui.update();
 

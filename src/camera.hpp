@@ -1,7 +1,5 @@
 #pragma once
 
-#include "level.hpp"
-
 extern const float DEFAULT_YAW;
 extern const float DEFAULT_PITCH;
 extern const float SPEED;
@@ -48,12 +46,13 @@ struct Camera {
         update_vectors();
     }
 
-    void update(Input &input, Level &l);
+    void update(Input &input, int wsize);
     void movement(vec3 move);
     void mouse_movement(float x_offset, float y_offset);
     void mouse_scroll(int8_t dir);
     void reset_view();
     void update_vectors();
+    void print_debug_information();
     mat4 view_matrix();
 };
 

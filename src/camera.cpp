@@ -23,15 +23,15 @@ mat4 Camera::view_matrix() {
     return lookAt(pos, pos + front, up);
 }
 
-void Camera::update(Input &input, Level &l) {
+void Camera::update(Input &input, int wsize) {
     (void)input;
 
     pos += vel * STATS.delta_time;
     const float damping = powf(0.9f, STATS.delta_time * MOVE_SPEED);
     vel *= damping;
 
-    pos.x = std::clamp(pos.x, -8.0f, (float)l.width + 8);
-    pos.z = std::clamp(pos.z, -8.0f, (float)l.width + 8);
+    pos.x = std::clamp(pos.x, -8.0f, (float)wsize + 8);
+    pos.z = std::clamp(pos.z, -8.0f, (float)wsize + 8);
 
     // TODO: Smooth clamping by reducing
     //       vel.y when y is close to 0.
@@ -91,4 +91,10 @@ void Camera::update_vectors() {
     front = normalize(new_front);
     right = normalize(cross(front, w_up));
     up = normalize(cross(right, front));
+}
+
+void Camera::print_debug_information() {
+    log_info("Camera");
+    printf("  pos: { %0.1f, %0.1f, %0.1f }\n", pos.x, pos.y, pos.z);
+    printf("  rot: { %0.1f, %0.1f }\n", yaw, pitch);
 }
