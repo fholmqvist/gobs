@@ -36,7 +36,7 @@ Shader world_shader = Shader(
 
 void World::init(Level &l) {
     level_width = l.width;
-    grid.reserve(l.total);
+    grid = std::vector(l.total, TILE::ROCK);
 }
 
 void World::set(ivec2 pos, TILE t) {
@@ -61,7 +61,6 @@ void World::reset_opengl(Level &l) {
     for (u32 i = 0; i < l.total; i++) {
         ivec2 pos = ivec2_from_idx(i, l.width);
         TILE tile = get(pos);
-        printf("%d\n", tile);
 
         set_cube(*this, cube, lattice, i, pos, tile_get_uvs(tile), (int)level_width);
     }
@@ -81,8 +80,8 @@ void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, in
     c.reset(uv, i, wsize);
 
     TILE tile = world.grid[i];
-    Neighbors walls = Neighbors::check(world.grid, wsize, pos,
-                                       [](TILE t) { return t == TILE::BRICK || t == TILE::ROCK; });
+    auto walls = Neighbors::check(world.grid, wsize, pos,
+                                  [](TILE t) { return t == TILE::BRICK || t == TILE::ROCK; });
 
     if (tile == TILE::ROCK_GROUND || tile == TILE::BRICK_GROUND || tile == TILE::WATER_GROUND) {
         c.on(FACE_DIR::GROUND);
@@ -126,7 +125,7 @@ void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, in
                        1.0f); // TODO
                               // PERLIN_DEFAULT_STRENGTH);
 
-    Neighbors water =
+    auto water =
         Neighbors::check(world.grid, wsize, pos, [](TILE t) { return t == TILE::WATER_GROUND; });
 
     const float WATER_DEPTH = WATER_LEVEL * 2.4f;
