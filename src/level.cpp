@@ -11,3 +11,6 @@ void Level::init(std::function<void(Level &l)> f) {
 
 void Level::update() {
 }
+
+void Level::render() {
+}

@@ -6,8 +6,8 @@
 
 struct Game {
     bool init();
-    void render();
-    void update();
+    void update(Level& l);
+    void render(Level& l);
 
     bool running;
 

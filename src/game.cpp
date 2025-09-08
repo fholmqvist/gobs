@@ -2,6 +2,7 @@
 
 #include "constants.hpp"
 #include "game.hpp"
+#include "stats.hpp"
 #include "timer.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -60,14 +61,22 @@ bool Game::init() {
     return true;
 }
 
-void Game::render() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void Game::update(Level &l) {
+    GLOBAL_TIMER.reset();
 
-    SDL_GL_SwapWindow(WINDOW);
+    running = input.update();
+
+    l.update();
+
+    STATS.add_update_time(GLOBAL_TIMER.stop());
 }
 
-void Game::update() {
-    running = input.update();
+void Game::render(Level &l) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    l.render();
+
+    SDL_GL_SwapWindow(WINDOW);
 }
 
 void Game::load_assets() {
