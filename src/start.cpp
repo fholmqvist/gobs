@@ -1,4 +1,5 @@
 #include "start.hpp"
+#include "game.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "external/stb_image.h"
@@ -10,11 +11,20 @@
 #include <GL/gl.h>
 #include <stdexcept>
 
+Game game;
+
 int start() {
     if (!init_SDL()) {
         throw std::runtime_error("SDL init failed");
     }
     load_assets();
+
+    game.init();
+
+    while (game.running) {
+        game.render();
+        game.update();
+    }
 
     return 0;
 }
