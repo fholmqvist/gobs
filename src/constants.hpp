@@ -2,10 +2,10 @@
 
 #include "base.hpp"
 
-extern const u8 CSIZE;
+extern const int SCREEN_W;
+extern const int SCREEN_H;
 
-#define WSIZE (LEVEL->wsize)
-#define WTOTAL (LEVEL->wtotal)
+extern const u8 CSIZE;
 
 #define XY_TO_IDX(x, y) ((usize)(x % WSIZE) + (usize)(y * WSIZE))
 #define TO_GRID(x) ((int)(floorf(x) / CSIZE))

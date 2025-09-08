@@ -1,5 +1,8 @@
 #include "constants.hpp"
 
+const int SCREEN_W = 1200; // 640;
+const int SCREEN_H = 900;  // 480;
+
 const u8 CSIZE = 16;
 
 const float SHADOW_STRENGTH = 0.2f;

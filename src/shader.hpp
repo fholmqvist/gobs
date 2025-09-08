@@ -5,9 +5,9 @@
 #include "level.hpp"
 
 struct Shader {
-    uint32_t id;
-    uint32_t vao;
-    uint32_t vbo;
+    u32 id;
+    u32 vao;
+    u32 vbo;
 
     std::string vertex_source;
     std::string fragment_source;
@@ -34,5 +34,4 @@ struct Shader {
 
 void store_glsl_helper(std::string source);
 
-void compile_shaders(const uint32_t shader_id, std::string vertex_source,
-                     std::string fragment_source);
+void compile_shaders(u32 shader_id, std::string vertex_source, std::string fragment_source);

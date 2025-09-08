@@ -14,9 +14,6 @@ struct Game {
   private:
     Input input;
 
-    const int SCREEN_W = 1200; // 640;
-    const int SCREEN_H = 900;  // 480;
-
     bool DISABLE_SHADERS;
     SDL_Window* WINDOW;
     SDL_GLContext GL_CONTEXT;
