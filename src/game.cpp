@@ -1,3 +1,4 @@
+#include "base.hpp"
 #include "pch.hpp"
 
 #include "constants.hpp"
@@ -57,6 +58,8 @@ bool Game::init() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
+    log_info("Initialized SDL in %s", time_to_string(GLOBAL_TIMER.stop()).c_str());
+
     load_assets();
 
     world.shader.init();
@@ -90,6 +93,8 @@ void Game::render(Level &l) {
 }
 
 void Game::load_assets() {
+    GLOBAL_TIMER.reset();
+
     load_texture("assets/textures/font.png", &FONT_TEXTURE, GL_RGBA);
 
     load_texture("assets/textures/tilemap.png", &TILE_MAP_TEXTURE, GL_RGB);
@@ -100,6 +105,8 @@ void Game::load_assets() {
 
     load_texture("assets/textures/bones.png", &SKAL_TEXTURE, GL_RGB);
     load_texture("assets/textures/gob.png", &GOB_TEXTURE, GL_RGB);
+
+    log_info("Loaded assets in %s", time_to_string(GLOBAL_TIMER.stop()).c_str());
 }
 
 void Game::load_texture(std::string path, u32* texture_id, int color_format) {

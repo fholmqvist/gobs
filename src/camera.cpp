@@ -8,14 +8,12 @@
 
 std::unique_ptr<Camera> CAMERA = std::make_unique<Camera>(vec3(0.0f, 0.0f, 3.0f));
 
-const mat4 PERSPECTIVE = perspective(radians(CAMERA->FOV), 800.0f / 600.0f, 0.1f, 100.0f);
+const mat4 PERSPECTIVE =
+    perspective(radians(CAMERA->FOV), (float)SCREEN_W / (float)SCREEN_H, 0.1f, 100.0f);
 const mat4 ORTHO = ortho(0.0f, (float)SCREEN_W, (float)SCREEN_H, 0.0f, -1.0f, 1.0f);
 
 const float DEFAULT_YAW = -90.0f;
 const float DEFAULT_PITCH = -60.0f;
-
-const float SPEED = 60.0f;
-const float SENSITIVITY = 0.5f;
 
 mat4 Camera::view_matrix() {
     return lookAt(pos, pos + front, up);
@@ -37,15 +35,14 @@ void Camera::update(Input &input, int wsize) {
     pos.y = std::clamp(pos.y, 1.0f, 8.0f);
 
     if (length(vel) < 0.001f) {
-        vel = vec3(0.0f);
+        vel = vec3(0);
     }
 
     yaw += mrotv.x;
     pitch += mrotv.y;
+    pitch = std::clamp(pitch, -88.0f, -10.0f);
 
     mrotv *= damping;
-
-    pitch = std::clamp(pitch, -88.0f, -10.0f);
 
     update_vectors();
 }

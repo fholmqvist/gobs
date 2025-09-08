@@ -2,8 +2,6 @@
 
 extern const float DEFAULT_YAW;
 extern const float DEFAULT_PITCH;
-extern const float SPEED;
-extern const float SENSITIVITY;
 
 using namespace glm;
 
@@ -23,7 +21,7 @@ struct Camera {
     vec3 front;
     vec3 up;
     vec3 right;
-    vec3 w_up;
+    vec3 w_up = vec3(0, 1, 0);
 
     const float FOV = 45.0f;
     const float MOVE_SPEED = 60.0f;
@@ -33,14 +31,12 @@ struct Camera {
 
     vec2 mpos;
     vec2 mrotv = vec2(0);
-    float move_speed;
-    float mouse_sensitivity;
+    float move_speed = 60.0f;
+    float mouse_sensitivity = 0.5f;
 
-    Camera(vec3 _pos = vec3(0), vec3 _up = vec3(0, 1, 0), float _yaw = DEFAULT_YAW,
-           float _pitch = DEFAULT_PITCH)
-        : front(vec3(0, 0, -1)), move_speed(SPEED), mouse_sensitivity(SENSITIVITY) {
+    Camera(vec3 _pos = vec3(0), float _yaw = DEFAULT_YAW, float _pitch = DEFAULT_PITCH)
+        : front(vec3(0, 0, -1)) {
         pos = _pos;
-        w_up = _up;
         yaw = _yaw;
         pitch = _pitch;
         update_vectors();
