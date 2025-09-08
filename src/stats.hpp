@@ -6,6 +6,8 @@ using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 using std::chrono::steady_clock;
 
+#define DELTA_TIME STATS.delta_time
+
 struct Stats {
     float delta_time = 0.166f;
 

@@ -31,8 +31,8 @@ bool Input::update(int wsize) {
                 }
                 break;
             case SDL_EVENT_MOUSE_MOTION:
-                CAMERA->mouse_pos.x = e.motion.x;
-                CAMERA->mouse_pos.y = e.motion.y;
+                CAMERA->mpos.x = e.motion.x;
+                CAMERA->mpos.y = e.motion.y;
 
                 if (mousestate & SDL_BUTTON_MMASK) {
                     int dx = e.motion.xrel;

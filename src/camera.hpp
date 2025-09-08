@@ -31,8 +31,8 @@ struct Camera {
     float yaw;
     float pitch;
 
-    vec2 mouse_pos;
-    vec2 mouse_rot_vel = vec2(0);
+    vec2 mpos;
+    vec2 mrotv = vec2(0);
     float move_speed;
     float mouse_sensitivity;
 

@@ -77,12 +77,16 @@ void Game::update(Level &l) {
 }
 
 void Game::render(Level &l) {
+    GLOBAL_TIMER.reset();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     world.shader.render(l);
     gui.render();
 
     SDL_GL_SwapWindow(WINDOW);
+
+    STATS.add_render_time(GLOBAL_TIMER.stop());
 }
 
 void Game::load_assets() {

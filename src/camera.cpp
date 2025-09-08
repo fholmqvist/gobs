@@ -14,10 +14,8 @@ const mat4 ORTHO = ortho(0.0f, (float)SCREEN_W, (float)SCREEN_H, 0.0f, -1.0f, 1.
 const float DEFAULT_YAW = -90.0f;
 const float DEFAULT_PITCH = -60.0f;
 
-const float SPEED = 2.5f;
-const float SENSITIVITY = 0.01f;
-
-#define cs mouse_state.click_state
+const float SPEED = 60.0f;
+const float SENSITIVITY = 0.5f;
 
 mat4 Camera::view_matrix() {
     return lookAt(pos, pos + front, up);
@@ -26,12 +24,12 @@ mat4 Camera::view_matrix() {
 void Camera::update(Input &input, int wsize) {
     (void)input;
 
-    pos += vel * STATS.delta_time;
-    const float damping = powf(0.9f, STATS.delta_time * MOVE_SPEED);
+    pos += vel * DELTA_TIME;
+    const float damping = powf(0.9f, DELTA_TIME * MOVE_SPEED);
     vel *= damping;
 
-    pos.x = std::clamp(pos.x, -8.0f, (float)wsize + 8);
-    pos.z = std::clamp(pos.z, -8.0f, (float)wsize + 8);
+    pos.x = std::clamp(pos.x, -4.0f, (float)wsize + 4);
+    pos.z = std::clamp(pos.z, -4.0f, (float)wsize + 4);
 
     // TODO: Smooth clamping by reducing
     //       vel.y when y is close to 0.
@@ -42,10 +40,10 @@ void Camera::update(Input &input, int wsize) {
         vel = vec3(0.0f);
     }
 
-    yaw += mouse_rot_vel.x;
-    pitch += mouse_rot_vel.y;
+    yaw += mrotv.x;
+    pitch += mrotv.y;
 
-    mouse_rot_vel *= damping;
+    mrotv *= damping;
 
     pitch = std::clamp(pitch, -88.0f, -10.0f);
 
@@ -58,14 +56,14 @@ void Camera::movement(vec3 move) {
 
     vec3 direction = move.x * flat_right + move.z * -flat_front;
 
-    vel += direction * STATS.delta_time * MOVE_SPEED;
+    vel += direction * DELTA_TIME * MOVE_SPEED;
 }
 
 void Camera::mouse_movement(float x_offset, float y_offset) {
-    x_offset *= mouse_sensitivity;
-    y_offset *= mouse_sensitivity;
+    x_offset *= mouse_sensitivity * DELTA_TIME;
+    y_offset *= mouse_sensitivity * DELTA_TIME;
 
-    mouse_rot_vel += vec2(x_offset, y_offset);
+    mrotv += vec2(x_offset, y_offset);
 }
 
 void Camera::mouse_scroll(int8_t dir) {
@@ -79,7 +77,7 @@ void Camera::mouse_scroll(int8_t dir) {
 void Camera::reset_view() {
     yaw = DEFAULT_YAW;
     pitch = DEFAULT_PITCH;
-    mouse_rot_vel = vec2(0);
+    mrotv = vec2(0);
     update_vectors();
 }
 
