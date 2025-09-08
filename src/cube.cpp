@@ -385,7 +385,7 @@ void faces_for_uv(WorldVertex* vs, u32 idx, TileUV uv, int wsize) {
         (WorldVertex){ { -0.5f, -0.5f, 0.5f }, { 0, 1, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 1 };
 }
 
-void Cube::fix_nbs_wall_uvs(World& world, std::bitset<8> walls, int wsize) {
+void Cube::fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize) {
     ivec2 vdx;
 
     if (!nbs_up(walls)) {
