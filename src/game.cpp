@@ -75,8 +75,7 @@ void Game::update(Level &l) {
     running = input.update(l.width);
     l.update();
     gui.update();
-
-    STATS.add_update_time(GLOBAL_TIMER.stop());
+    STATS.update(GLOBAL_TIMER.stop());
 }
 
 void Game::render(Level &l) {

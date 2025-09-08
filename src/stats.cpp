@@ -6,7 +6,7 @@ using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 using std::chrono::steady_clock;
 
-void Stats::update() {
+void Stats::update(float update_time) {
     LAST = NOW;
     NOW = SDL_GetPerformanceCounter();
     delta_time = (float)((NOW - LAST) / (float)SDL_GetPerformanceFrequency());
@@ -15,11 +15,10 @@ void Stats::update() {
     if (++COUNTER >= FPSS.size()) {
         COUNTER = 0;
     }
+
+    UPDATE_TIMES[COUNTER] = update_time;
 }
 
-void Stats::add_update_time(float time) {
-    UPDATE_TIMES[COUNTER] = time;
-}
 
 void Stats::add_render_time(float time) {
     RENDER_TIMES[COUNTER] = time;

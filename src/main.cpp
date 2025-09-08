@@ -1,3 +1,4 @@
+#include "camera.hpp"
 #include "game.hpp"
 
 int main() {
@@ -11,6 +12,7 @@ int main() {
     l.init([&game](Level &l) {
         l.width = 8;
         l.total = l.width * l.width;
+        CAMERA->pos = vec3{ 1, 3, 3 };
         game.world.init(l);
         game.world.set(ivec2{ 1, 1 }, TILE::ROCK_GROUND);
         game.world.reset_opengl(l);

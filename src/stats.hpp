@@ -28,8 +28,7 @@ struct Stats {
         UPDATE_TIMES.fill(100.0f);
     }
 
-    void update();
-    void add_update_time(float time);
+    void update(float update_time);
     void add_render_time(float time);
     float FPS();
     std::string UPDATE_TIME();
