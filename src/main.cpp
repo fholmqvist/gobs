@@ -3,11 +3,15 @@
 int main() {
     Game game;
 
-    Level l = Level();
-
-    if (!game.init(l)) {
+    if (!game.init()) {
         throw std::runtime_error("Game failed to initialize");
     }
+
+    Level l = Level();
+    l.init([&game](Level &l) {
+        l.width = 8;
+        game.world.reset_opengl(l);
+    });
 
     while (game.running) {
         game.update(l);

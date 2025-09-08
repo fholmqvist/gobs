@@ -37,6 +37,8 @@ TILE World::get(ivec2 pos) {
 }
 
 void World::reset_opengl(Level &l) {
+    level_width = l.width;
+
     verts.verts.clear();
     verts.verts.reserve(l.total * N_VERTS_PER_CUBE);
     verts.indices.clear();
