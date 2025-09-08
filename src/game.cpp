@@ -1,17 +1,15 @@
-#include "game.hpp"
+#include "pch.hpp"
+
 #include "constants.hpp"
-#include <stdexcept>
+#include "game.hpp"
+#include "timer.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "external/stb_image.h"
 
-#include <GL/glew.h>
-
-#include <GL/gl.h>
-#include <SDL3/SDL.h>
-#include <cstdio>
-
 bool Game::init() {
+    GLOBAL_TIMER.reset();
+
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         SDL_Log("SDL_Init Error: %s\n", SDL_GetError());
         return false;
@@ -23,7 +21,7 @@ bool Game::init() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     const auto ar = aspect_ratio(SCREEN_W, SCREEN_H);
-    if(ar.first != 4 || ar.second != 3) {
+    if (ar.first != 4 || ar.second != 3) {
         throw std::runtime_error(frmt("Illegal screen resolution %d:%d", ar.first, ar.second));
     }
 

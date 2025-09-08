@@ -3,7 +3,6 @@
 #include "base.hpp"
 #include "input.hpp"
 #include "level.hpp"
-#include <string>
 
 struct Game {
     bool init();

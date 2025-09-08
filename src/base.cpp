@@ -1,9 +1,5 @@
 #include "base.hpp"
 
-#include <cstdarg>
-#include <numeric>
-#include <string>
-
 std::string cyan_string(const std::string &str) {
     return "\033[36m" + str + "\033[0m";
 }

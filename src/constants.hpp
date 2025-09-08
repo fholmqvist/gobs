@@ -2,8 +2,6 @@
 
 #include "base.hpp"
 
-#include <SDL3/SDL_render.h>
-
 extern const u8 CSIZE;
 
 #define WSIZE (LEVEL->wsize)
