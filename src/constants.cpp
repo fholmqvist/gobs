@@ -13,7 +13,6 @@ float DELTA_TIME = 0.166f;
 bool DISABLE_SHADERS = false;
 SDL_Window* WINDOW;
 SDL_GLContext GL_CONTEXT;
-SDL_Event EVENT;
 
 u32 FONT_TEXTURE;
 

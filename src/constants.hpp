@@ -24,7 +24,6 @@ extern float DELTA_TIME;
 extern bool DISABLE_SHADERS;
 extern SDL_Window* WINDOW;
 extern SDL_GLContext GL_CONTEXT;
-extern SDL_Event EVENT;
 
 extern u32 FONT_TEXTURE;
 
