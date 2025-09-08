@@ -9,13 +9,13 @@ const auto DEFAULT_FONT_SIZE = 16;
 
 struct TextRenderer {
   private:
-    uint32_t SHADER_ID;
-    uint32_t TEXTURE_ID;
-    uint32_t VAO;
-    uint32_t VBO;
-    uint32_t EBO;
+    u32 SHADER_ID;
+    u32 TEXTURE_ID;
+    u32 VAO;
+    u32 VBO;
+    u32 EBO;
 
-    static constexpr uint32_t indices[] = { 0, 1, 2, 2, 3, 0 };
+    static constexpr u32 indices[] = { 0, 1, 2, 2, 3, 0 };
 
   public:
     TextRenderer() {

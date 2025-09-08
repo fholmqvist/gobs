@@ -1,14 +1,16 @@
 #include "shader.hpp"
 
 void Shader::init() {
-    id = glCreateProgram();
-    compile_shaders(id, vertex_source, fragment_source);
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
+    ID = glCreateProgram();
+    compile_shaders(ID, vertex_source, fragment_source);
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &UBO);
     if (init_func) {
-        glUseProgram(id);
-        glBindVertexArray(vao);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glUseProgram(ID);
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(GL_UNIFORM_BUFFER, UBO);
         init_func.value()(*this);
         glBindVertexArray(0);
         glUseProgram(0);
@@ -16,10 +18,11 @@ void Shader::init() {
 }
 
 void Shader::render(Level &l) {
-    assert(id);
-    glUseProgram(id);
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    assert(ID);
+    glUseProgram(ID);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_UNIFORM_BUFFER, UBO);
     draw_func(*this, l);
     glBindVertexArray(0);
     glUseProgram(0);
@@ -66,8 +69,7 @@ void read_shader_file(std::string &result, std::string filename) {
     file.close();
 }
 
-void compile_shaders(u32 shader_id, std::string vertex_source,
-                     std::string fragment_source) {
+void compile_shaders(u32 shader_id, std::string vertex_source, std::string fragment_source) {
     int success;
 
     u32 vertex_shader = glCreateShader(GL_VERTEX_SHADER);

@@ -5,9 +5,10 @@
 #include "level.hpp"
 
 struct Shader {
-    u32 id;
-    u32 vao;
-    u32 vbo;
+    u32 ID;
+    u32 VAO;
+    u32 VBO;
+    u32 UBO;
 
     std::string vertex_source;
     std::string fragment_source;

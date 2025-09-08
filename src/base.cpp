@@ -55,3 +55,19 @@ std::string time_to_string(u64 time, int precision) {
 
     return oss.str();
 }
+
+usize MB(usize b) {
+    return b * 1024 * 1024;
+}
+
+usize KB(usize b) {
+    return b * 1024;
+}
+
+usize B_AS_MB(usize b) {
+    return b / 1024 / 1024;
+}
+
+usize B_AS_KB(usize b) {
+    return b / 1024;
+}

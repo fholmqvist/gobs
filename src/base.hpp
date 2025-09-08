@@ -21,3 +21,7 @@ void log_dang(const char* fmt, ...);
 std::string frmt(const char* fmt, ...);
 std::pair<int, int> aspect_ratio(int width, int height);
 std::string time_to_string(u64 time, int precision = 4);
+usize MB(usize b);
+usize KB(usize b);
+usize B_AS_MB(usize b);
+usize B_AS_KB(usize b);

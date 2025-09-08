@@ -4,6 +4,7 @@
 #include "gui.hpp"
 #include "input.hpp"
 #include "level.hpp"
+#include "world.hpp"
 
 struct Game {
     bool init();
@@ -20,6 +21,7 @@ struct Game {
     SDL_Window* WINDOW;
     SDL_GLContext GL_CONTEXT;
 
+    World world;
     Level level;
 
     void load_assets();
