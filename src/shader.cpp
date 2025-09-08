@@ -7,23 +7,27 @@ void Shader::init() {
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &UBO);
     if (init_func) {
-        glUseProgram(ID);
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+        bind();
         init_func.value()(*this);
-        glBindVertexArray(0);
-        glUseProgram(0);
+        unbind();
     }
 }
 
 void Shader::render(Level &l) {
     assert(ID);
+    bind();
+    draw_func(*this, l);
+    unbind();
+}
+
+void Shader::bind() {
     glUseProgram(ID);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindBuffer(GL_UNIFORM_BUFFER, UBO);
-    draw_func(*this, l);
+}
+
+void Shader::unbind() {
     glBindVertexArray(0);
     glUseProgram(0);
 }
@@ -34,7 +38,7 @@ void store_glsl_helper(std::string path) {
     std::string result;
     std::ifstream file(path);
     if (!file.is_open()) {
-        throw std::runtime_error("Could not open file " + path);
+        throw std::runtime_error(frmt("Could not open file \"%s\"", path.c_str()));
     }
 
     std::string line;
@@ -50,7 +54,7 @@ void store_glsl_helper(std::string path) {
 void read_shader_file(std::string &result, std::string filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        throw std::runtime_error("Could not open file " + filename);
+        throw std::runtime_error(frmt("Could not open file \"%s\"", filename.c_str()));
     }
 
     std::string line;

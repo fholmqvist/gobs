@@ -31,6 +31,9 @@ struct Shader {
     void init();
 
     void render(Level &l);
+
+    void bind();
+    void unbind();
 };
 
 void store_glsl_helper(std::string source);

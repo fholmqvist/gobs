@@ -2,7 +2,7 @@
 #include "cube.hpp"
 
 Shader world_shader =
-    Shader("assets/shaders/grid.vs", "assets/shaders/grid.fs", [](Shader &s, Level &level) {
+    Shader("assets/shaders/grid_vs.glsl", "assets/shaders/grid_fs.glsl", [](Shader &s, Level &level) {
         (void)level;
 
         GLsizei stride = VERT_STRIDE;

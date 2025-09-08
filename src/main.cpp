@@ -1,8 +1,8 @@
 #include "game.hpp"
 
-Game game;
-
 int main() {
+    Game game;
+
     if (!game.init()) {
         throw std::runtime_error("Game failed to initialize");
     }

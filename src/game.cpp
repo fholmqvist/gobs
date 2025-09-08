@@ -59,6 +59,7 @@ bool Game::init() {
 
     load_assets();
 
+    world.shader.init();
     gui.init();
 
     running = true;
@@ -69,7 +70,6 @@ void Game::update(Level &l) {
     GLOBAL_TIMER.reset();
 
     running = input.update();
-
     l.update();
     gui.update();
 
@@ -79,6 +79,7 @@ void Game::update(Level &l) {
 void Game::render(Level &l) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    world.shader.render(l);
     l.render();
     gui.render();
 
