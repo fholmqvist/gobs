@@ -1,12 +1,8 @@
 #pragma once
 
-
 #include "base.hpp"
 
 #include <SDL3/SDL_render.h>
-
-extern const int SCREEN_W;
-extern const int SCREEN_H;
 
 extern const u8 CSIZE;
 
@@ -20,10 +16,6 @@ extern const float SHADOW_STRENGTH;
 extern const float WATER_LEVEL;
 
 extern float DELTA_TIME;
-
-extern bool DISABLE_SHADERS;
-extern SDL_Window* WINDOW;
-extern SDL_GLContext GL_CONTEXT;
 
 extern u32 FONT_TEXTURE;
 

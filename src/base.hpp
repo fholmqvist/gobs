@@ -21,5 +21,8 @@ typedef size_t usize;
 
 typedef u64 ID;
 
+void log_info(const char* fmt, ...);
+void log_dang(const char* fmt, ...);
 std::string frmt(const char* fmt, ...);
 std::pair<int, int> aspect_ratio(int width, int height);
+std::string time_to_string(u64 time, int precision = 4);

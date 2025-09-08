@@ -26,6 +26,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+target_precompile_headers(${PROJECT_NAME}
+    PRIVATE
+        "src/pch.hpp"
+)
+
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         m

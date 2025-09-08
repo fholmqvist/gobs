@@ -1,18 +1,11 @@
 #include "constants.hpp"
 
-const int SCREEN_W = 1200; // 640;
-const int SCREEN_H = 900;  // 480;
-
 const u8 CSIZE = 16;
 
 const float SHADOW_STRENGTH = 0.2f;
 const float WATER_LEVEL = -0.11f;
 
 float DELTA_TIME = 0.166f;
-
-bool DISABLE_SHADERS = false;
-SDL_Window* WINDOW;
-SDL_GLContext GL_CONTEXT;
 
 u32 FONT_TEXTURE;
 
