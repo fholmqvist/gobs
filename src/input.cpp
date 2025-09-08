@@ -48,17 +48,15 @@ bool Input::update(int wsize) {
     const bool LEFT = keystate[SDL_SCANCODE_J];
     const bool RIGHT = keystate[SDL_SCANCODE_L];
 
-    if (UP || DOWN || LEFT || RIGHT) {
-        if (UP) {
-            CAMERA->movement(vec3(0.0f, 0.0f, -1.0f));
-        } else if (DOWN) {
-            CAMERA->movement(vec3(0.0f, 0.0f, 1.0f));
-        }
-        if (LEFT) {
-            CAMERA->movement(vec3(-1.0f, 0.0f, 0.0f));
-        } else if (RIGHT) {
-            CAMERA->movement(vec3(1.0f, 0.0f, 0.0f));
-        }
+    if (UP) {
+        CAMERA->movement(vec3(0.0f, 0.0f, -1.0f));
+    } else if (DOWN) {
+        CAMERA->movement(vec3(0.0f, 0.0f, 1.0f));
+    }
+    if (LEFT) {
+        CAMERA->movement(vec3(-1.0f, 0.0f, 0.0f));
+    } else if (RIGHT) {
+        CAMERA->movement(vec3(1.0f, 0.0f, 0.0f));
     }
 
     CAMERA->update(*this, wsize);

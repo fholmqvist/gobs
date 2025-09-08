@@ -116,14 +116,11 @@ void Cube::offset(float x, float y, float z) {
 void Cube::add_verts_and_indices(IndexedVerts &grid) {
     u32 base_vertex = (u32)grid.verts.size();
 
-    grid.verts.reserve(grid.verts.size() + N_VERTS_PER_CUBE);
-    for (u32 n = 0; n < N_VERTS_PER_CUBE; ++n) {
-        grid.verts.push_back(verts[n]);
-    }
+    grid.verts.insert(grid.verts.end(), verts.begin(), verts.end());
 
     grid.indices.reserve(grid.indices.size() + N_INDICES);
     for (u32 n = 0; n < N_INDICES; ++n) {
-        grid.indices.push_back((u32)(indices[n] + base_vertex));
+        grid.indices.push_back((u32)indices[n] + base_vertex);
     }
 }
 

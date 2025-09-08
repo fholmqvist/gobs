@@ -1,10 +1,12 @@
 #include "shader.hpp"
+#include "pch.hpp"
 
 void Shader::init() {
     ID = glCreateProgram();
     compile_shaders(ID, vertex_source, fragment_source);
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
     glGenBuffers(1, &UBO);
     if (init_func) {
         bind();
@@ -24,6 +26,7 @@ void Shader::bind() {
     glUseProgram(ID);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBindBuffer(GL_UNIFORM_BUFFER, UBO);
 }
 

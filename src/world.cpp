@@ -1,14 +1,14 @@
 #include "world.hpp"
 
+#include "camera.hpp"
 #include "constants.hpp"
 #include "cube.hpp"
 #include "ivec2.hpp"
 #include "lattice.hpp"
 
 Shader world_shader = Shader(
-    "assets/shaders/grid_vs.glsl", "assets/shaders/grid_fs.glsl", [](Shader &s, Level &level) {
-        (void)level;
-
+    "assets/shaders/grid_vs.glsl", "assets/shaders/grid_fs.glsl",
+    [](Shader &s) {
         GLsizei stride = VERT_STRIDE;
 
         glBufferData(GL_UNIFORM_BUFFER, (size)KB(16), NULL, GL_DYNAMIC_DRAW);
@@ -32,6 +32,17 @@ Shader world_shader = Shader(
 
         glEnableVertexAttribArray(4); // vcolor
         glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, stride, (void*)(10 * sizeof(float)));
+    },
+    [](Shader &s, Level &l) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, TILE_MAP_TEXTURE);
+        glUniform1i(glGetUniformLocation(s.ID, "_texture"), 0);
+
+        int view_projection = glGetUniformLocation(s.ID, "view_projection");
+        mat4 vm = CAMERA->view_matrix() * PERSPECTIVE;
+        glUniformMatrix4fv(view_projection, 1, GL_FALSE, glm::value_ptr(vm));
+
+        glDrawElements(GL_TRIANGLES, (GLsizei)l.n_indices, GL_UNSIGNED_INT, 0);
     });
 
 void World::init(Level &l) {
@@ -72,6 +83,8 @@ void World::reset_opengl(Level &l) {
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, verts.indices.size() * (size)sizeof(u32),
                  verts.indices.data(), GL_STATIC_DRAW);
+
+    l.n_indices = verts.indices.size();
 
     shader.unbind();
 }

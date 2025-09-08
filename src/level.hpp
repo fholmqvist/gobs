@@ -9,6 +9,9 @@ struct Level {
 
     Level() = default;
 
+    // TODO:
+    usize n_indices;
+
     static Level from_file(std::string filename);
 
     void init(std::function<void(Level &l)> f);
