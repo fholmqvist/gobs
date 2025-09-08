@@ -5,6 +5,6 @@
 #include "vertices.hpp"
 
 struct IndexedVerts {
-    std::vector<WorldVertex> vertices;
+    std::vector<WorldVertex> verts;
     std::vector<u32> indices;
 };

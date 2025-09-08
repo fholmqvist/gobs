@@ -3,11 +3,11 @@
 int main() {
     Game game;
 
-    if (!game.init()) {
+    Level l = Level();
+
+    if (!game.init(l)) {
         throw std::runtime_error("Game failed to initialize");
     }
-
-    Level l = Level();
 
     while (game.running) {
         game.update(l);

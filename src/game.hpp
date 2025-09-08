@@ -7,7 +7,7 @@
 #include "world.hpp"
 
 struct Game {
-    bool init();
+    bool init(Level& l);
     void update(Level& l);
     void render(Level& l);
 

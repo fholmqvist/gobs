@@ -8,7 +8,7 @@
 #define N_INDICES          (N_FACES * N_INDICES_PER_FACE)
 #define VERT_STRIDE        (size)sizeof(WorldVertex)
 #define CUBE_VERTICES      (usize)(VERT_STRIDE * N_VERTS_PER_FACE * FACE_DIR_COUNT)
-#define CUBE_INDICES       (usize)(N_INDICES_PER_FACE * FACE_DIR_COUNT)
+#define CUBE_INDICES       (usize)(N_INDICES_PER_FACE * (usize)FaceDir::FACE_DIR_COUNT)
 #define FLOATS_PER_VERTEX  (u32)(sizeof(WorldVertex) / sizeof(float))
 
 #define FRONT_FACE_IDX     0
@@ -18,3 +18,14 @@
 #define TOP_FACE_IDX       16
 #define GROUND_FACE_IDX    20
 // clang-format on
+
+enum struct FaceDir : u8 {
+    FACE_DIR_NONE,
+    FACE_DIR_FRONT,
+    FACE_DIR_BACK,
+    FACE_DIR_LEFT,
+    FACE_DIR_RIGHT,
+    FACE_DIR_TOP,
+    FACE_DIR_GROUND,
+    FACE_DIR_COUNT
+};

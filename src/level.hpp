@@ -5,6 +5,7 @@
 
 struct Level {
     usize width;
+    usize total;
 
     Level() = default;
 

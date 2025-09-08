@@ -8,7 +8,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "external/stb_image.h"
 
-bool Game::init() {
+bool Game::init(Level& l) {
     GLOBAL_TIMER.reset();
 
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
@@ -59,6 +59,7 @@ bool Game::init() {
 
     load_assets();
 
+    world.level_width = l.width;
     world.shader.init();
     gui.init();
 
