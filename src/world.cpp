@@ -39,8 +39,8 @@ Shader world_shader = Shader(
         glUniform1i(glGetUniformLocation(s.ID, "_texture"), 0);
 
         int view_projection = glGetUniformLocation(s.ID, "view_projection");
-        mat4 vm = CAMERA->view_matrix() * PERSPECTIVE;
-        glUniformMatrix4fv(view_projection, 1, GL_FALSE, glm::value_ptr(vm));
+        glUniformMatrix4fv(view_projection, 1, GL_FALSE,
+                           value_ptr(PERSPECTIVE * CAMERA->view_matrix()));
 
         glDrawElements(GL_TRIANGLES, (GLsizei)l.n_indices, GL_UNSIGNED_INT, 0);
     });
