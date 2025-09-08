@@ -5,6 +5,7 @@
 #include "indexed_verts.hpp"
 #include "ivec2.hpp"
 #include "nbs.hpp"
+#include "tile.hpp"
 #include "world.hpp"
 
 const u8 INDICES[N_INDICES] = {
@@ -130,210 +131,210 @@ void Cube::add_verts_and_indices(IndexedVerts &grid) {
 void cube_is_water(Cube* c, u8 walls, u8 water, float amount) {
     // TL
     if (!nbs_up_left(walls) && !nbs_up_left(water) && nbs_right(water) && nbs_down(water)) {
-        c->verts[20].pos[0] += amount * 0.7f;
-        c->verts[20].pos[2] += amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[21].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[20].pos[0] += amount * 0.7f;
+        verts[20].pos[2] += amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[21].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // TR
     if (!nbs_up_right(walls) && !nbs_up_right(water) && nbs_left(water) && nbs_down(water)) {
-        c->verts[21].pos[0] -= amount * 0.7f;
-        c->verts[21].pos[2] += amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[21].color = SHADOW_STRENGTH;
-        c->verts[22].color = SHADOW_STRENGTH;
+        verts[21].pos[0] -= amount * 0.7f;
+        verts[21].pos[2] += amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[21].color = SHADOW_STRENGTH;
+        verts[22].color = SHADOW_STRENGTH;
     }
     // BR
     if (!nbs_down_right(walls) && !nbs_down_right(water) && nbs_left(water) && nbs_up(water)) {
-        c->verts[22].pos[0] -= amount * 0.7f;
-        c->verts[22].pos[2] -= amount * 0.7f;
-        c->verts[21].color = SHADOW_STRENGTH;
-        c->verts[22].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[22].pos[0] -= amount * 0.7f;
+        verts[22].pos[2] -= amount * 0.7f;
+        verts[21].color = SHADOW_STRENGTH;
+        verts[22].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // BL
     if (!nbs_down_left(walls) && !nbs_down_left(water) && nbs_right(water) && nbs_up(water)) {
-        c->verts[23].pos[0] += amount * 0.7f;
-        c->verts[23].pos[2] -= amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[22].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[23].pos[0] += amount * 0.7f;
+        verts[23].pos[2] -= amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[22].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // T
     if (!nbs_up(walls) && !nbs_up(water) && nbs_left(water) && nbs_right(water)) {
-        c->verts[20].pos[0] -= amount * 0.7f;
-        c->verts[20].pos[2] -= amount * 0.7f;
-        c->verts[21].pos[0] += amount * 0.7f;
-        c->verts[21].pos[2] -= amount * 0.7f;
-        c->verts[22].color = 1.0f;
-        c->verts[23].color = 1.0f;
+        verts[20].pos[0] -= amount * 0.7f;
+        verts[20].pos[2] -= amount * 0.7f;
+        verts[21].pos[0] += amount * 0.7f;
+        verts[21].pos[2] -= amount * 0.7f;
+        verts[22].color = 1.0f;
+        verts[23].color = 1.0f;
     }
     // R
     if (!nbs_right(walls) && !nbs_right(water) && nbs_up(water) && nbs_down(water)) {
-        c->verts[21].pos[0] += amount * 0.7f;
-        c->verts[21].pos[2] -= amount * 0.7f;
-        c->verts[22].pos[0] += amount * 0.7f;
-        c->verts[22].pos[2] += amount * 0.7f;
-        c->verts[20].color = 1.0f;
-        c->verts[23].color = 1.0f;
+        verts[21].pos[0] += amount * 0.7f;
+        verts[21].pos[2] -= amount * 0.7f;
+        verts[22].pos[0] += amount * 0.7f;
+        verts[22].pos[2] += amount * 0.7f;
+        verts[20].color = 1.0f;
+        verts[23].color = 1.0f;
     }
     // D
     if (!nbs_down(walls) && !nbs_down(water) && nbs_left(water) && nbs_right(water)) {
-        c->verts[22].pos[0] += amount * 0.7f;
-        c->verts[22].pos[2] += amount * 0.7f;
-        c->verts[23].pos[0] -= amount * 0.7f;
-        c->verts[23].pos[2] += amount * 0.7f;
-        c->verts[20].color = 1.0f;
-        c->verts[21].color = 1.0f;
+        verts[22].pos[0] += amount * 0.7f;
+        verts[22].pos[2] += amount * 0.7f;
+        verts[23].pos[0] -= amount * 0.7f;
+        verts[23].pos[2] += amount * 0.7f;
+        verts[20].color = 1.0f;
+        verts[21].color = 1.0f;
     }
     // L
     if (!nbs_left(walls) && !nbs_left(water) && nbs_up(water) && nbs_down(water)) {
-        c->verts[20].pos[0] -= amount * 0.7f;
-        c->verts[20].pos[2] -= amount * 0.7f;
-        c->verts[23].pos[0] -= amount * 0.7f;
-        c->verts[23].pos[2] += amount * 0.7f;
-        c->verts[21].color = 1.0f;
-        c->verts[22].color = 1.0f;
+        verts[20].pos[0] -= amount * 0.7f;
+        verts[20].pos[2] -= amount * 0.7f;
+        verts[23].pos[0] -= amount * 0.7f;
+        verts[23].pos[2] += amount * 0.7f;
+        verts[21].color = 1.0f;
+        verts[22].color = 1.0f;
     }
 }
 
 void cube_is_adjacent_to_water(Cube* c, u8 walls, u8 water, float amount) {
     // TL CORNER, CORNER QUAD
     if (nbs_down_right(water) && !nbs_right(water) && !nbs_down(water)) {
-        c->verts[22].pos[0] += amount * 0.7f;
-        c->verts[22].pos[2] += amount * 0.7f;
-        c->verts[22].color = SHADOW_STRENGTH;
+        verts[22].pos[0] += amount * 0.7f;
+        verts[22].pos[2] += amount * 0.7f;
+        verts[22].color = SHADOW_STRENGTH;
     }
     // TL CORNER, QUAD ABOVE
     if (nbs_down(water) && !nbs_down_left(water) && !nbs_left(water)) {
-        c->verts[23].pos[0] += amount * 0.7f;
-        c->verts[23].pos[2] += amount * 0.7f;
-        c->verts[22].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[23].pos[0] += amount * 0.7f;
+        verts[23].pos[2] += amount * 0.7f;
+        verts[22].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // TOP
     if (nbs_down(water) && !nbs_up(water)) {
-        c->verts[22].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[22].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // TR CORNER, QUAD ABOVE
     if (nbs_down(water) && !nbs_down_right(water) && !nbs_right(water)) {
         if (!nbs_right(walls)) {
-            c->verts[22].pos[0] -= amount * 0.7f;
+            verts[22].pos[0] -= amount * 0.7f;
         }
-        c->verts[22].pos[2] += amount * 0.7f;
-        c->verts[22].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[22].pos[2] += amount * 0.7f;
+        verts[22].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // TR CORNER, CORNER QUAD
     if (nbs_down_left(water) && !nbs_left(water) && !nbs_down(water)) {
-        c->verts[23].pos[0] -= amount * 0.7f;
-        c->verts[23].pos[2] += amount * 0.7f;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[23].pos[0] -= amount * 0.7f;
+        verts[23].pos[2] += amount * 0.7f;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // TR CORNER, RIGHT QUAD
     if (nbs_left(water) && !nbs_up_left(water) && !nbs_down(water)) {
-        c->verts[20].pos[0] -= amount * 0.7f;
-        c->verts[20].pos[2] += amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[20].pos[0] -= amount * 0.7f;
+        verts[20].pos[2] += amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // RIGHT
     if (nbs_left(water) && !nbs_right(water)) {
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // BR CORNER, RIGHT QUAD
     if (nbs_left(water) && !nbs_down_left(water) && !nbs_up(water)) {
-        c->verts[23].pos[0] -= amount * 0.7f;
-        c->verts[23].pos[2] -= amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[23].color = SHADOW_STRENGTH;
+        verts[23].pos[0] -= amount * 0.7f;
+        verts[23].pos[2] -= amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[23].color = SHADOW_STRENGTH;
     }
     // BR CORNER, CORNER QUAD
     if (nbs_up_left(water) && !nbs_left(water) && !nbs_up(water)) {
-        c->verts[20].pos[0] -= amount * 0.7f;
-        c->verts[20].pos[2] -= amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
+        verts[20].pos[0] -= amount * 0.7f;
+        verts[20].pos[2] -= amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
     }
     // BR CORNER, QUAD BELOW
     if (nbs_up(water) && !nbs_up_right(water) && !nbs_right(water)) {
-        c->verts[21].pos[0] -= amount * 0.7f;
-        c->verts[21].pos[2] -= amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[21].color = SHADOW_STRENGTH;
+        verts[21].pos[0] -= amount * 0.7f;
+        verts[21].pos[2] -= amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[21].color = SHADOW_STRENGTH;
     }
     // DOWN
     if (nbs_up(water) && !nbs_down(water)) {
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[21].color = SHADOW_STRENGTH;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[21].color = SHADOW_STRENGTH;
     }
     // BL CORNER, QUAD BELOW
     if (nbs_up(water) && !nbs_up_left(water) && !nbs_left(water)) {
-        c->verts[20].pos[0] += amount * 0.7f;
-        c->verts[20].pos[2] -= amount * 0.7f;
-        c->verts[20].color = SHADOW_STRENGTH;
-        c->verts[21].color = SHADOW_STRENGTH;
+        verts[20].pos[0] += amount * 0.7f;
+        verts[20].pos[2] -= amount * 0.7f;
+        verts[20].color = SHADOW_STRENGTH;
+        verts[21].color = SHADOW_STRENGTH;
     }
     // BL CORNER, CORNER QUAD
     if (nbs_up_right(water) && !nbs_up(water) && !nbs_right(water)) {
-        c->verts[21].pos[0] += amount * 0.7f;
-        c->verts[21].pos[2] -= amount * 0.7f;
-        c->verts[21].color = SHADOW_STRENGTH;
+        verts[21].pos[0] += amount * 0.7f;
+        verts[21].pos[2] -= amount * 0.7f;
+        verts[21].color = SHADOW_STRENGTH;
     }
     // BL CORNER, QUAD LEFT
     if (nbs_right(water) && !nbs_down_right(water) && !nbs_down(water)) {
-        c->verts[22].pos[0] += amount * 0.7f;
+        verts[22].pos[0] += amount * 0.7f;
         if (!nbs_down(walls)) {
-            c->verts[22].pos[2] -= amount * 0.7f;
+            verts[22].pos[2] -= amount * 0.7f;
         }
-        c->verts[21].color = SHADOW_STRENGTH;
-        c->verts[22].color = SHADOW_STRENGTH;
+        verts[21].color = SHADOW_STRENGTH;
+        verts[22].color = SHADOW_STRENGTH;
     }
     // LEFT
     if (nbs_right(water) && !nbs_left(water)) {
-        c->verts[21].color = SHADOW_STRENGTH;
-        c->verts[22].color = SHADOW_STRENGTH;
+        verts[21].color = SHADOW_STRENGTH;
+        verts[22].color = SHADOW_STRENGTH;
     }
     // TL CORNER, QUAD LEFT
     if (nbs_right(water) && !nbs_up_right(water) && !nbs_up(water)) {
-        c->verts[21].pos[0] += amount * 0.7f;
-        c->verts[21].pos[2] += amount * 0.7f;
-        c->verts[21].color = SHADOW_STRENGTH;
-        c->verts[22].color = SHADOW_STRENGTH;
+        verts[21].pos[0] += amount * 0.7f;
+        verts[21].pos[2] += amount * 0.7f;
+        verts[21].color = SHADOW_STRENGTH;
+        verts[22].color = SHADOW_STRENGTH;
     }
 }
 
 void cube_shade_unshaded_corners(Cube* c, u8 walls) {
     const float BRIGHT_SHADOW = 0.65f;
     if (nbs_up(walls)) {
-        c->verts[20].color = min(BRIGHT_SHADOW, c->verts[20].color);
-        c->verts[21].color = min(BRIGHT_SHADOW, c->verts[21].color);
+        verts[20].color = min(BRIGHT_SHADOW, verts[20].color);
+        verts[21].color = min(BRIGHT_SHADOW, verts[21].color);
     }
     if (nbs_up_right(walls)) {
-        c->verts[21].color = min(BRIGHT_SHADOW, c->verts[21].color);
+        verts[21].color = min(BRIGHT_SHADOW, verts[21].color);
     }
     if (nbs_right(walls)) {
-        c->verts[21].color = min(BRIGHT_SHADOW, c->verts[21].color);
-        c->verts[22].color = min(BRIGHT_SHADOW, c->verts[22].color);
+        verts[21].color = min(BRIGHT_SHADOW, verts[21].color);
+        verts[22].color = min(BRIGHT_SHADOW, verts[22].color);
     }
     if (nbs_down_right(walls)) {
-        c->verts[22].color = min(BRIGHT_SHADOW, c->verts[22].color);
+        verts[22].color = min(BRIGHT_SHADOW, verts[22].color);
     }
     if (nbs_down(walls)) {
-        c->verts[22].color = min(BRIGHT_SHADOW, c->verts[22].color);
-        c->verts[23].color = min(BRIGHT_SHADOW, c->verts[23].color);
+        verts[22].color = min(BRIGHT_SHADOW, verts[22].color);
+        verts[23].color = min(BRIGHT_SHADOW, verts[23].color);
     }
     if (nbs_down_left(walls)) {
-        c->verts[23].color = min(BRIGHT_SHADOW, c->verts[23].color);
+        verts[23].color = min(BRIGHT_SHADOW, verts[23].color);
     }
     if (nbs_left(walls)) {
-        c->verts[20].color = min(BRIGHT_SHADOW, c->verts[20].color);
-        c->verts[23].color = min(BRIGHT_SHADOW, c->verts[23].color);
+        verts[20].color = min(BRIGHT_SHADOW, verts[20].color);
+        verts[23].color = min(BRIGHT_SHADOW, verts[23].color);
     }
     if (nbs_up_left(walls)) {
-        c->verts[20].color = min(BRIGHT_SHADOW, c->verts[20].color);
+        verts[20].color = min(BRIGHT_SHADOW, verts[20].color);
     }
 }
 

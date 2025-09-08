@@ -1,6 +1,7 @@
 #pragma once
 
 #include "indexed_verts.hpp"
+#include "lattice.hpp"
 #include "tile_uv.hpp"
 #include "vertices.hpp"
 #include "world.hpp"

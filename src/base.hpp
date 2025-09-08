@@ -25,3 +25,4 @@ usize MB(usize b);
 usize KB(usize b);
 usize B_AS_MB(usize b);
 usize B_AS_KB(usize b);
+size clamp(size x, size low, size high);

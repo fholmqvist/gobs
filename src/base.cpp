@@ -71,3 +71,7 @@ usize B_AS_MB(usize b) {
 usize B_AS_KB(usize b) {
     return b / 1024;
 }
+
+size clamp(size x, size low, size high) {
+    return x < low ? low : (x > high ? high : x);
+}
