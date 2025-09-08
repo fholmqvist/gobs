@@ -1,0 +1,27 @@
+#include "constants.hpp"
+
+const int SCREEN_W = 1200; // 640;
+const int SCREEN_H = 900;  // 480;
+
+const u8 CSIZE = 16;
+
+const float SHADOW_STRENGTH = 0.2f;
+const float WATER_LEVEL = -0.11f;
+
+float DELTA_TIME = 0.166f;
+
+bool DISABLE_SHADERS = false;
+SDL_Window* WINDOW;
+SDL_GLContext GL_CONTEXT;
+SDL_Event EVENT;
+
+u32 FONT_TEXTURE;
+
+u32 TILE_MAP_TEXTURE;
+u32 WATER_TEXTURE;
+u32 RAIL_TEXTURE;
+u32 RAIL_CART_TEXTURE;
+u32 PIPE_TEXTURE;
+
+u32 SKAL_TEXTURE;
+u32 GOB_TEXTURE;
