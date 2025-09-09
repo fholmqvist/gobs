@@ -8,17 +8,20 @@ int main() {
         throw std::runtime_error("Game failed to initialize");
     }
 
-    Level l = Level(8);
-    l.init([&game](Level &l) {
+    game.level = Level(8);
+    game.level.init([&game](Level &l) {
         CAMERA->pos = vec3{ 3.5, 7, 8 };
         game.world.init(l);
         game.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
         game.world.reset_opengl(l);
     });
 
+    game.world.set({ 2, 2 }, TILE::ROCK_GROUND);
+    game.world.update_opengl({ 2, 2 }, game.level);
+
     while (game.running) {
-        game.update(l);
-        game.render(l);
+        game.update();
+        game.render();
     }
 
     return 0;

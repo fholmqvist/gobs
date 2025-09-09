@@ -69,6 +69,31 @@ TILE World::get(ivec2 pos) {
 
 void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize);
 
+void World::update_opengl(ivec2 pos, Level &l) {
+    size idx = ivec2_to_idx(pos, l.width);
+
+    shader.bind();
+
+    Cube cube;
+    Lattice lattice;
+    TILE tile = get(pos);
+
+    // TODO: set_cube appends not updates. We need update_cube.
+    // set_cube(*this, cube, lattice, idx, pos, tile_get_uvs(tile), (int)level_width);
+
+    glBufferSubData(GL_ARRAY_BUFFER,                              //
+                    idx * N_VERTS_PER_CUBE * sizeof(WorldVertex), //
+                    N_VERTS_PER_CUBE * sizeof(WorldVertex),       //
+                    verts.verts.data() + idx * N_VERTS_PER_CUBE);
+
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,       //
+                    idx * N_INDICES * sizeof(u32), //
+                    N_INDICES * sizeof(u32),       //
+                    verts.indices.data() + idx * N_INDICES);
+
+    shader.unbind();
+}
+
 void World::reset_opengl(Level &l) {
     verts.verts.clear();
     verts.verts.reserve(l.total * N_VERTS_PER_CUBE);

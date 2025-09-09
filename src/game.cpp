@@ -69,21 +69,21 @@ bool Game::init() {
     return true;
 }
 
-void Game::update(Level &l) {
+void Game::update() {
     GLOBAL_TIMER.reset();
 
-    running = input.update(l.width);
-    l.update();
+    running = input.update(level.width);
+    level.update();
     gui.update();
     STATS.update(GLOBAL_TIMER.stop());
 }
 
-void Game::render(Level &l) {
+void Game::render() {
     GLOBAL_TIMER.reset();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    world.shader.render(l);
+    world.shader.render(level);
     gui.render();
 
     SDL_GL_SwapWindow(WINDOW);
