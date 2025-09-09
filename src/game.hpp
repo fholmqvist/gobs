@@ -4,6 +4,7 @@
 #include "gui.hpp"
 #include "input.hpp"
 #include "level.hpp"
+#include "liquids.hpp"
 #include "world.hpp"
 
 struct Game {
@@ -15,6 +16,7 @@ struct Game {
 
     World world;
     Level level;
+    Liquids liquids;
 
     bool running;
 

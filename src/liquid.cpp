@@ -10,9 +10,8 @@
 ID LIQUID_GLOBAL_ID = 0;
 
 Liquid::Liquid(LIQUID t, ivec4 wpos, int wsize) {
-    Liquid lq{};
-    lq.id = ++LIQUID_GLOBAL_ID;
-    lq.type = t;
+    id = ++LIQUID_GLOBAL_ID;
+    type = t;
 
     TileUV liquid_uv = (TileUV){ 0, 1, 0, 1 };
 
@@ -23,7 +22,6 @@ Liquid::Liquid(LIQUID t, ivec4 wpos, int wsize) {
     usize count = (usize)(abs(wpos[2] - wpos[0]) * abs(wpos[3] - wpos[1]));
 
     verts.verts.reserve(count * N_VERTS_PER_CUBE);
-    original_ys.reserve(count * N_VERTS_PER_CUBE);
     verts.indices.reserve(count * CUBE_INDICES);
 
     const float y_offset = 0.0f;
@@ -47,7 +45,7 @@ Liquid::Liquid(LIQUID t, ivec4 wpos, int wsize) {
             }
 
             c.offset(0.5f, 0, 0.5f);
-            c.add_verts_and_indices(lq.verts);
+            c.add_verts_and_indices(verts);
         }
     }
 
@@ -55,29 +53,28 @@ Liquid::Liquid(LIQUID t, ivec4 wpos, int wsize) {
     //
     // Note that we're storing the original
     // Y position in an unused float position.
-    std::vector<WorldVertex> verts = lq.verts.verts;
-    for (size i = 0; i < (size)verts.size(); i++) {
-        lq.original_ys[i] = verts[i].pos[1];
+    original_ys.reserve(count * N_VERTS_PER_CUBE);
+    for (size i = 0; i < (size)verts.verts.size(); i++) {
+        original_ys.push_back(verts.verts[i].pos[1]);
     }
 }
 
 static float WATER_CYCLE = 0.0f;
 
 void Liquid::update() {
-    std::vector<WorldVertex> verts2 = verts.verts;
-    for (size i = 0; i < (size)verts2.size(); i++) {
-        verts2[i].pos[1] = original_ys[i];
+    for (size i = 0; i < (size)verts.verts.size(); i++) {
+        verts.verts[i].pos[1] = original_ys[i];
 
         ivec2 pos = {
-            (int)verts2[i].pos[0] + (int)verts2[i].wpos[0],
-            (int)verts2[i].pos[2] + (int)verts2[i].wpos[1],
+            (int)verts.verts[i].pos[0] + (int)verts.verts[i].wpos[0],
+            (int)verts.verts[i].pos[2] + (int)verts.verts[i].wpos[1],
         };
 
         float speed = type == LIQUID::OIL ? 0.4f : 1.0f;
         float amount = (float)(pos[0] + pos[1]) + WATER_CYCLE * speed;
 
         amount = sinf(amount) + 1.0f;
-        verts2[i].pos[1] += amount / 128.0f;
+        verts.verts[i].pos[1] += amount / 128.0f;
     }
 
     WATER_CYCLE += DELTA_TIME * 1.5f;

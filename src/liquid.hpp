@@ -19,5 +19,4 @@ struct Liquid {
     Liquid(LIQUID, ivec4 pos, int wsize);
 
     void update();
-    void render();
 };

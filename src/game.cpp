@@ -74,6 +74,7 @@ void Game::update() {
 
     running = input.update(level.width);
     level.update();
+    liquids.update();
     gui.update();
     STATS.update(GLOBAL_TIMER.stop());
 }
@@ -84,6 +85,7 @@ void Game::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     world.shader.render(level);
+    liquids.render();
     gui.render();
 
     SDL_GL_SwapWindow(WINDOW);

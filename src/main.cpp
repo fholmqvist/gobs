@@ -13,10 +13,9 @@ int main() {
         CAMERA->pos = vec3{ 3.5, 7, 8 };
         game.world.init(l);
         game.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
+        game.liquids.add(game.world, LIQUID::OIL, { 3, 3, 5, 5 });
         game.world.reset_opengl(l);
     });
-
-    game.world.set({ 3, 3 }, TILE::WATER_GROUND);
 
     while (game.running) {
         game.update();
