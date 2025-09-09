@@ -12,7 +12,7 @@ int main() {
     l.init([&game](Level &l) {
         CAMERA->pos = vec3{ 1, 3, 3 };
         game.world.init(l);
-        game.world.set(ivec2{ 1, 1 }, TILE::ROCK_GROUND);
+        game.world.set_square({ 1, 2, 3, 4 }, TILE::BRICK_GROUND);
         game.world.reset_opengl(l);
     });
 

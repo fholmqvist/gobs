@@ -19,6 +19,7 @@ struct World {
 
     void init(Level& l);
     void set(ivec2 pos, TILE t);
+    void set_square(ivec4 pos, TILE t);
     TILE get(ivec2 pos);
     void reset_opengl(Level &);
 };

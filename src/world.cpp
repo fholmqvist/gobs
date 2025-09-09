@@ -54,6 +54,14 @@ void World::set(ivec2 pos, TILE t) {
     grid[ivec2_to_idx(pos, level_width)] = t;
 }
 
+void World::set_square(ivec4 pos, TILE t) {
+    for (size y = pos.y; y < pos.w; y++) {
+        for (size x = pos.x; x < pos.z; x++) {
+            set({ x, y }, t);
+        }
+    }
+}
+
 TILE World::get(ivec2 pos) {
     return grid[ivec2_to_idx(pos, level_width)];
 }
