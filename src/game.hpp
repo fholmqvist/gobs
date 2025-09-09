@@ -3,14 +3,20 @@
 #include "base.hpp"
 #include "gui.hpp"
 #include "input.hpp"
-#include "systems.hpp"
+#include "level.hpp"
+#include "liquids.hpp"
+#include "world.hpp"
 
 struct Game {
     bool init();
     void update();
     void render();
 
-    Systems systems;
+    Game() : level(-1) {};
+
+    World world;
+    Level level;
+    Liquids liquids;
 
     bool running;
 
