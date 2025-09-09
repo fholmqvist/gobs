@@ -124,6 +124,17 @@ void Cube::add_verts_and_indices(IndexedVerts &grid) {
     }
 }
 
+void Cube::update_verts_and_indices(IndexedVerts &grid, size idx) {
+    u32 base_vertex = idx * N_VERTS_PER_CUBE;
+    u32 base_index = idx * N_INDICES;
+
+    std::copy(verts.begin(), verts.end(), grid.verts.begin() + base_vertex);
+
+    for (u32 n = 0; n < N_INDICES; ++n) {
+        grid.indices[base_index + n] = indices[n] + base_vertex;
+    }
+}
+
 void Cube::is_water(Neighbors walls, Neighbors water, float amount) {
     // TL
     if (!walls.up_left() && !water.up_left() && water.right() && water.down()) {

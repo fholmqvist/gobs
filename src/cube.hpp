@@ -48,6 +48,7 @@ struct Cube {
     void set_uv(FACE_DIR dir, TileUV uv, int wsize);
     void offset(float x, float y, float z);
     void add_verts_and_indices(IndexedVerts &grid);
+    void update_verts_and_indices(IndexedVerts &grid, size idx);
     void fix_nbs_wall_uvs(World &world, std::bitset<8> walls, int wsize);
     void is_water(Neighbors walls, Neighbors water, float amount);
     void is_adjacent_to_water(Neighbors walls, Neighbors water, float amount);

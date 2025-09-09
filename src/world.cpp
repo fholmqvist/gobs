@@ -79,8 +79,7 @@ void World::update_opengl(ivec2 pos, Level &l) {
     Lattice lattice;
     TILE tile = get(pos);
 
-    // TODO: set_cube appends not updates. We need update_cube.
-    // set_cube(*this, cube, lattice, idx, pos, tile_get_uvs(tile), (int)level_width);
+    update_cube(*this, cube, lattice, idx, pos, tile_get_uvs(tile), (int)level_width);
 
     glBufferSubData(GL_ARRAY_BUFFER,                              //
                     idx * N_VERTS_PER_CUBE * sizeof(WorldVertex), //
@@ -204,5 +203,5 @@ void add_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, in
 
 void update_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize) {
     set_cube(world, c, l, i, pos, uv, wsize);
-    // TODO:
+    c.update_verts_and_indices(world.verts, i);
 }
