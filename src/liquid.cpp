@@ -5,6 +5,7 @@
 #include "ivec2.hpp"
 #include "lattice.hpp"
 #include "random.hpp"
+#include "stats.hpp"
 #include "tile_uv.hpp"
 
 ID LIQUID_GLOBAL_ID = 0;

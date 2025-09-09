@@ -16,8 +16,6 @@ extern const float WATER_LEVEL;
 extern const float SHADOW_STRENGTH;
 extern const float WATER_LEVEL;
 
-extern float DELTA_TIME;
-
 extern u32 FONT_TEXTURE;
 
 extern u32 TILE_MAP_TEXTURE;

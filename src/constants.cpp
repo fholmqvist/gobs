@@ -8,8 +8,6 @@ const u8 CSIZE = 16;
 const float SHADOW_STRENGTH = 0.2f;
 const float WATER_LEVEL = -0.11f;
 
-float DELTA_TIME = 0.166f;
-
 u32 FONT_TEXTURE;
 
 u32 TILE_MAP_TEXTURE;

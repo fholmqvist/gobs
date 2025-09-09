@@ -3,17 +3,15 @@
 #include "pch.hpp" // IWYU pragma: keep
 
 #include "base.hpp"
-#include "liquids.hpp"
-#include "world.hpp"
+#include "systems.hpp"
 
 struct Level {
     usize width;
     usize total;
 
-    Liquids liquids;
-    World world;
-
     Level(int wsize) : width(wsize), total(wsize * wsize) {};
+
+    Systems systems;
 
     // TODO:
     usize n_indices;

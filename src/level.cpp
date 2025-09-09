@@ -8,8 +8,8 @@ void Level::init(std::function<void(Level &l)> f) {
 
     GLOBAL_TIMER.reset();
 
-    world.init(*this);
-    world.shader.init();
+    systems.world.init(*this);
+    systems.liquids.init();
 
     f(*this);
 
@@ -17,15 +17,15 @@ void Level::init(std::function<void(Level &l)> f) {
 }
 
 void Level::update() {
-    liquids.update();
+    systems.liquids.update();
 }
 
 void Level::render() {
-    world.shader.render(*this);
-    liquids.render();
+    systems.world.shader.render(*this);
+    systems.liquids.render(*this);
 }
 
 void Level::add_liquid(LIQUID type, ivec4 pos) {
-    world.set_square(pos, TILE::WATER_GROUND);
-    liquids.add(type, pos, width);
+    systems.world.set_square(pos, TILE::WATER_GROUND);
+    systems.liquids.add(type, pos, width);
 }

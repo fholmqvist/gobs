@@ -32,7 +32,7 @@ void Camera::update(Input &input, int wsize) {
     // TODO: Smooth clamping by reducing
     //       vel.y when y is close to 0.
     // pos.y = std::clamp(pos.y, 1.5f, 8.0f);
-    pos.y = std::clamp(pos.y, 1.0f, 8.0f);
+    // pos.y = std::clamp(pos.y, 1.0f, 8.0f);
 
     if (length(vel) < 0.001f) {
         vel = vec3(0);
@@ -40,7 +40,10 @@ void Camera::update(Input &input, int wsize) {
 
     yaw += mrotv.x;
     pitch += mrotv.y;
-    pitch = std::clamp(pitch, -88.0f, -10.0f);
+
+    // TODO:
+    // pitch = std::clamp(pitch, -88.0f, -10.0f);
+    pitch = std::clamp(pitch, -88.0f, 20.0f);
 
     mrotv *= damping;
 

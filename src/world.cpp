@@ -50,6 +50,7 @@ Shader world_shader = Shader(
 
 void World::init(Level &l) {
     level_width = l.width;
+    shader.init();
     grid = std::vector(l.total, TILE::ROCK);
     reset_opengl(l);
 }
