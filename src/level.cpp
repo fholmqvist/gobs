@@ -4,6 +4,7 @@
 #include "timer.hpp"
 
 void Level::init(std::function<void(Level &l)> f) {
+    assert(width > 0);
     GLOBAL_TIMER.reset();
     f(*this);
     log_info("Initialized level in %s", GLOBAL_TIMER.stop_string().c_str());

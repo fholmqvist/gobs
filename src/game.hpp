@@ -11,6 +11,8 @@ struct Game {
     void update(Level &l);
     void render(Level &l);
 
+    Game() : level(-1) {};
+
     World world;
     Level level;
 

@@ -7,12 +7,10 @@ struct Level {
     usize width;
     usize total;
 
-    Level() = default;
+    Level(int wsize) : width(wsize), total(wsize * wsize) {};
 
     // TODO:
     usize n_indices;
-
-    static Level from_file(std::string filename);
 
     void init(std::function<void(Level &l)> f);
     void update();

@@ -8,10 +8,8 @@ int main() {
         throw std::runtime_error("Game failed to initialize");
     }
 
-    Level l = Level();
+    Level l = Level(8);
     l.init([&game](Level &l) {
-        l.width = 8;
-        l.total = l.width * l.width;
         CAMERA->pos = vec3{ 1, 3, 3 };
         game.world.init(l);
         game.world.set(ivec2{ 1, 1 }, TILE::ROCK_GROUND);
