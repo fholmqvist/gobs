@@ -16,7 +16,7 @@ void Lattice::from_floats(std::vector<float> &vs, bool cube) {
         bb_max = vec3(0.5f, 0.5f, 0.5f);
     } else {
         bb_min = { FLT_MAX, FLT_MAX, FLT_MAX };
-        bb_max = { FLT_MIN, FLT_MIN, FLT_MIN };
+        bb_max = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
 
         for (size i = 0; i < (size)vs.size(); i += VERT_STRIDE) {
             vec3 pos = {
@@ -38,7 +38,7 @@ void Lattice::from_vertices(std::vector<Vertex> &vs, bool cube) {
         bb_max = vec3(0.5f, 0.5f, 0.5f);
     } else {
         bb_min = { FLT_MAX, FLT_MAX, FLT_MAX };
-        bb_max = { FLT_MIN, FLT_MIN, FLT_MIN };
+        bb_max = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
 
         for (size i = 0; i < (size)vs.size(); i++) {
             vec3 pos = vs[i].pos;
@@ -56,7 +56,7 @@ void Lattice::from_world_vertices(std::array<WorldVertex, N_VERTS_PER_CUBE> &vs,
         bb_max = vec3(0.5f, 0.5f, 0.5f);
     } else {
         bb_min = { FLT_MAX, FLT_MAX, FLT_MAX };
-        bb_max = { FLT_MIN, FLT_MIN, FLT_MIN };
+        bb_max = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
 
         for (size i = 0; i < N_VERTS_PER_CUBE; i++) {
             vec3 pos = vs[i].pos;
@@ -157,7 +157,7 @@ void Lattice::match_liquid_level(Neighbors nbs, float amount) {
     }
 }
 
-void Lattice::apply_to_vertex(vec3 vert) {
+vec3 Lattice::apply_to_vertex(vec3 vert) {
     vec3 local = (vert - bb_min) / (bb_max - bb_min);
     glm::clamp(local, 0.0f, 0.999f);
 
@@ -167,15 +167,13 @@ void Lattice::apply_to_vertex(vec3 vert) {
 
     vec3 weights = grid - base;
 
-    Lattice::deform_vertex(base, weights, vert);
+    return Lattice::deform_vertex(base, weights);
 }
 
 void Lattice::apply_to_cube(Cube &c) {
     for (size i = 0; i < (size)c.verts.size(); i++) {
         vec3 vert = c.verts[i].pos;
-        printf("before %.2f %.2f %.2f\n", vert[0], vert[1], vert[2]);
-        Lattice::apply_to_vertex(vert);
-        printf("after  %.2f %.2f %.2f\n", vert[0], vert[1], vert[2]);
+        vert = Lattice::apply_to_vertex(vert);
         c.verts[i].pos[1] = vert[1];
     }
 }
@@ -198,8 +196,8 @@ void Lattice::init_vertices() {
     assert(initialized == LATTICE_VERTS);
 }
 
-void Lattice::deform_vertex(vec3 base_index, vec3 weights, vec3 out) {
-    out *= 0.0f;
+vec3 Lattice::deform_vertex(vec3 base_index, vec3 weights) {
+    vec3 out = vec3(0);
 
     for (int dz = 0; dz <= 1; ++dz) {
         for (int dy = 0; dy <= 1; ++dy) {
@@ -219,11 +217,12 @@ void Lattice::deform_vertex(vec3 base_index, vec3 weights, vec3 out) {
                 float wz = dz ? weights[2] : (1.0f - weights[2]);
                 float w = wx * wy * wz;
 
-                vec3 contrib = pos * w;
-                out += contrib;
+                out += pos * w;
             }
         }
     }
+
+    return out;
 }
 
 size get_index(size i, size j, size k) {

@@ -19,11 +19,11 @@ struct Lattice {
     void from_world_vertices(std::array<WorldVertex, N_VERTS_PER_CUBE> &vs, bool cube);
     void add_slope_perlin(vec3 pos, float y_offset, float y_scale);
     void add_distortion_perlin(vec3 pos);
-    void apply_to_vertex(vec3 vert);
+    vec3 apply_to_vertex(vec3 vert);
     void add_offset(float amount);
     void match_liquid_level(Neighbors nbs, float amount);
     void apply_to_cube(Cube &c);
-    void deform_vertex(vec3 base_index, vec3 weights, vec3 out);
+    vec3 deform_vertex(vec3 base_index, vec3 weights);
 
     size ulb();
     size urb();
