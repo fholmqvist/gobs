@@ -2,19 +2,16 @@
 #include "game.hpp"
 
 int main() {
-    Game game;
+    Game game(Level(8, [](Level &l) {
+        CAMERA->pos = vec3{ 3.5, 7, 8 };
+        l.systems.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
+        l.add_liquid(LIQUID::WATER, { 3, 3, 5, 5 });
+        l.systems.world.reset_opengl(l);
+    }));
 
     if (!game.init()) {
         throw std::runtime_error("Game failed to initialize");
     }
-
-    game.level = Level(8);
-    game.level.init([](Level &l) {
-        CAMERA->pos = vec3{ 3.5, 7, 8 };
-        l.systems.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
-        l.add_liquid(LIQUID::OIL, { 3, 3, 5, 5 });
-        l.systems.world.reset_opengl(l);
-    });
 
     while (game.running) {
         game.update();

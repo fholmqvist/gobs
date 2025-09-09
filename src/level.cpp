@@ -3,7 +3,7 @@
 #include "base.hpp"
 #include "timer.hpp"
 
-void Level::init(std::function<void(Level &l)> f) {
+void Level::init() {
     assert(width > 0);
 
     GLOBAL_TIMER.reset();
@@ -11,7 +11,7 @@ void Level::init(std::function<void(Level &l)> f) {
     systems.world.init(*this);
     systems.liquids.init();
 
-    f(*this);
+    initf(*this);
 
     log_info("Initialized level in %s", GLOBAL_TIMER.stop_string().c_str());
 }

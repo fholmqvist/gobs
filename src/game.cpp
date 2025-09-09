@@ -63,6 +63,7 @@ bool Game::init() {
     load_assets();
 
     gui.init();
+    level.init();
 
     running = true;
     return true;

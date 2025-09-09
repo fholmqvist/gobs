@@ -10,7 +10,7 @@ struct Game {
     void update();
     void render();
 
-    Game() : level(-1) {};
+    Game(Level l) : level(l) {};
 
     Level level;
 

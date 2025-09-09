@@ -9,14 +9,17 @@ struct Level {
     usize width;
     usize total;
 
-    Level(int wsize) : width(wsize), total(wsize * wsize) {};
+    std::function<void(Level &l)> initf;
+
+    Level(int wsize, std::function<void(Level &)> _initf)
+        : width(wsize), total(wsize * wsize), initf(_initf) {};
 
     Systems systems;
 
     // TODO:
     usize n_indices;
 
-    void init(std::function<void(Level &l)> f);
+    void init();
     void update();
     void render();
 
