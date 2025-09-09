@@ -67,7 +67,8 @@ TILE World::get(ivec2 pos) {
     return grid[ivec2_to_idx(pos, level_width)];
 }
 
-void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize);
+void add_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize);
+void update_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize);
 
 void World::update_opengl(ivec2 pos, Level &l) {
     size idx = ivec2_to_idx(pos, l.width);
@@ -107,7 +108,7 @@ void World::reset_opengl(Level &l) {
         ivec2 pos = ivec2_from_idx(i, l.width);
         TILE tile = get(pos);
 
-        set_cube(*this, cube, lattice, i, pos, tile_get_uvs(tile), (int)level_width);
+        add_cube(*this, cube, lattice, i, pos, tile_get_uvs(tile), (int)level_width);
     }
 
     shader.bind();
@@ -194,6 +195,14 @@ void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, in
     c.shade_unshaded_corners(walls);
 
     c.fix_nbs_wall_uvs(world, walls, wsize);
+}
 
+void add_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize) {
+    set_cube(world, c, l, i, pos, uv, wsize);
     c.add_verts_and_indices(world.verts);
+}
+
+void update_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize) {
+    set_cube(world, c, l, i, pos, uv, wsize);
+    // TODO:
 }
