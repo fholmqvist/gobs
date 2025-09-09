@@ -16,8 +16,7 @@ Liquid::Liquid(LIQUID t, ivec4 wpos, int wsize) {
 
     TileUV liquid_uv = (TileUV){ 0, 1, 0, 1 };
 
-    Cube c;
-    c.init(liquid_uv, 0, wsize);
+    Cube c(liquid_uv, 0, wsize);
 
     Lattice l;
 

@@ -43,7 +43,11 @@ static inline i8 face_index_from_dir(FACE_DIR dir) {
 
 void faces_for_uv(WorldVertex* vs, u32 idx, TileUV uv, int wsize);
 
-void Cube::init(TileUV uv, u32 _idx, int wsize) {
+Cube::Cube(TileUV uv, u32 _idx, int wsize) {
+    reset(uv, _idx, wsize);
+}
+
+void Cube::reset(TileUV uv, u32 _idx, int wsize) {
     idx = _idx;
 
     WorldVertex vs[24];
@@ -53,10 +57,6 @@ void Cube::init(TileUV uv, u32 _idx, int wsize) {
     std::copy(std::begin(vs), std::end(vs), verts.begin());
 
     indices.fill(0);
-}
-
-void Cube::reset(TileUV uv, u32 idx, int wsize) {
-    init(uv, idx, wsize);
 }
 
 void Cube::on(FACE_DIR dir) {

@@ -41,7 +41,9 @@ struct Cube {
     std::array<u8, N_INDICES> indices;
     u32 idx;
 
-    void init(TileUV uv, u32 idx, int wsize);
+    Cube() = default;
+    Cube(TileUV uv, u32 idx, int wsize);
+
     void reset(TileUV uv, u32 idx, int wsize);
     void on(FACE_DIR dir);
     void off(FACE_DIR dir);
