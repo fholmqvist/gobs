@@ -1,4 +1,5 @@
 #include "text.hpp"
+
 #include "camera.hpp"
 #include "constants.hpp"
 #include "shader.hpp"

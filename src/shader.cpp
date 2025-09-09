@@ -1,5 +1,6 @@
-#include "shader.hpp"
 #include "pch.hpp"
+
+#include "shader.hpp"
 
 void Shader::init() {
     ID = glCreateProgram();

@@ -16,9 +16,7 @@ struct Timer {
     }
 
     void reset();
-
-    uint64_t stop();
-
+    u64 stop();
     std::string stop_string();
 };
 

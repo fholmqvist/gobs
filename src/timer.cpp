@@ -10,8 +10,8 @@ void Timer::reset() {
     clock = steady_clock::now();
 }
 
-uint64_t Timer::stop() {
-    uint64_t dur = duration_cast<microseconds>(steady_clock::now() - clock).count();
+u64 Timer::stop() {
+    u64 dur = duration_cast<microseconds>(steady_clock::now() - clock).count();
     reset();
     return dur;
 }

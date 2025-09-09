@@ -14,10 +14,10 @@ struct Stats {
   private:
     steady_clock::time_point clock = steady_clock::now();
 
-    uint32_t NOW = SDL_GetPerformanceCounter();
-    uint32_t LAST = 0;
+    u32 NOW = SDL_GetPerformanceCounter();
+    u32 LAST = 0;
 
-    uint8_t COUNTER = 0;
+    u8 COUNTER = 0;
     std::array<float, 32> FPSS = {};
     std::array<float, 32> UPDATE_TIMES = {};
     std::array<float, 32> RENDER_TIMES = {};
