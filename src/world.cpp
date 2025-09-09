@@ -143,7 +143,7 @@ void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, in
     l.from_world_vertices(c.verts, true);
 
     const float y_offset = 0.0f;
-    l.add_slope_perlin(vec3{ pos[0], 0, pos[1] }, y_offset, PERLIN_DEFAULT_STRENGTH);
+    l.add_slope_perlin(vec3{ pos[0], 0, pos[1] }, y_offset, PERLIN_DEFAULT_STRENGTH*8);
 
     auto water =
         Neighbors::check(world.grid, wsize, pos, [](TILE t) { return t == TILE::WATER_GROUND; });
