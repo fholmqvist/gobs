@@ -4,11 +4,12 @@
 #include "gui.hpp"
 #include "input.hpp"
 #include "level.hpp"
+#include "window.hpp"
 
 struct Game {
     bool init();
     void update();
-    void render();
+    void render(Window &);
 
     Game(Level l) : level(l) {};
 
@@ -19,10 +20,6 @@ struct Game {
   private:
     Input input;
     GUI gui;
-
-    bool DISABLE_SHADERS;
-    SDL_Window* WINDOW;
-    SDL_GLContext GL_CONTEXT;
 
     void load_assets();
     void load_texture(std::string path, u32* texture_id, int color_format);

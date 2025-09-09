@@ -2,6 +2,11 @@
 #include "game.hpp"
 
 int main() {
+    Window window;
+    if (!window.init()) {
+        throw std::runtime_error("Window failed to initialize");
+    }
+
     Game game(Level(8, [](Level &l) {
         CAMERA->pos = vec3{ 3.5, 7, 8 };
         l.systems.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
@@ -15,7 +20,7 @@ int main() {
 
     while (game.running) {
         game.update();
-        game.render();
+        game.render(window);
     }
 
     return 0;
