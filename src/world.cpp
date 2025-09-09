@@ -5,6 +5,7 @@
 #include "cube.hpp"
 #include "ivec2.hpp"
 #include "lattice.hpp"
+#include "neighbors.hpp"
 #include "random.hpp"
 
 Shader world_shader = Shader(
@@ -49,10 +50,12 @@ Shader world_shader = Shader(
 void World::init(Level &l) {
     level_width = l.width;
     grid = std::vector(l.total, TILE::ROCK);
+    reset_opengl(l);
 }
 
 void World::set(ivec2 pos, TILE t) {
     grid[ivec2_to_idx(pos, level_width)] = t;
+    update_opengl(pos);
 }
 
 void World::set_square(ivec4 pos, TILE t) {
@@ -70,26 +73,22 @@ TILE World::get(ivec2 pos) {
 void add_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize);
 void update_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize);
 
-void World::update_opengl(ivec2 pos, Level &l) {
-    size idx = ivec2_to_idx(pos, l.width);
-
+void World::update_opengl(ivec2 pos) {
     shader.bind();
 
     Cube cube;
     Lattice lattice;
-    TILE tile = get(pos);
 
-    update_cube(*this, cube, lattice, idx, pos, tile_get_uvs(tile), (int)level_width);
+    for (auto dir : directions) {
+        auto npos = pos + dir;
+        if (!in_range(npos, level_width)) {
+            continue;
+        }
 
-    glBufferSubData(GL_ARRAY_BUFFER,                              //
-                    idx * N_VERTS_PER_CUBE * sizeof(WorldVertex), //
-                    N_VERTS_PER_CUBE * sizeof(WorldVertex),       //
-                    verts.verts.data() + idx * N_VERTS_PER_CUBE);
+        update_one_tile(npos);
+    }
 
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,       //
-                    idx * N_INDICES * sizeof(u32), //
-                    N_INDICES * sizeof(u32),       //
-                    verts.indices.data() + idx * N_INDICES);
+    update_one_tile(pos);
 
     shader.unbind();
 }
@@ -194,6 +193,26 @@ void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, in
     c.shade_unshaded_corners(walls);
 
     c.fix_nbs_wall_uvs(world, walls, wsize);
+}
+
+void World::update_one_tile(ivec2 pos) {
+    size idx = ivec2_to_idx(pos, level_width);
+    TILE tile = get(pos);
+
+    Cube cube;
+    Lattice lattice;
+
+    update_cube(*this, cube, lattice, idx, pos, tile_get_uvs(tile), (int)level_width);
+
+    glBufferSubData(GL_ARRAY_BUFFER,                              //
+                    idx * N_VERTS_PER_CUBE * sizeof(WorldVertex), //
+                    N_VERTS_PER_CUBE * sizeof(WorldVertex),       //
+                    verts.verts.data() + idx * N_VERTS_PER_CUBE);
+
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,       //
+                    idx * N_INDICES * sizeof(u32), //
+                    N_INDICES * sizeof(u32),       //
+                    verts.indices.data() + idx * N_INDICES);
 }
 
 void add_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, int wsize) {

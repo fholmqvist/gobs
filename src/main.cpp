@@ -16,8 +16,7 @@ int main() {
         game.world.reset_opengl(l);
     });
 
-    game.world.set({ 2, 2 }, TILE::ROCK_GROUND);
-    game.world.update_opengl({ 2, 2 }, game.level);
+    game.world.set({ 3, 3 }, TILE::WATER_GROUND);
 
     while (game.running) {
         game.update();

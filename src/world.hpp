@@ -21,6 +21,9 @@ struct World {
     void set(ivec2 pos, TILE t);
     void set_square(ivec4 pos, TILE t);
     TILE get(ivec2 pos);
-    void update_opengl(ivec2 pos, Level &l);
+    void update_opengl(ivec2 pos);
     void reset_opengl(Level &);
+
+  private:
+    void update_one_tile(ivec2 pos);
 };
