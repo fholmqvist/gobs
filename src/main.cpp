@@ -10,9 +10,9 @@ int main() {
 
     Level l = Level(8);
     l.init([&game](Level &l) {
-        CAMERA->pos = vec3{ 2, 4, 4.5 };
+        CAMERA->pos = vec3{ 3.5, 7, 8 };
         game.world.init(l);
-        game.world.set_square({ 1, 1, 3, 3 }, TILE::BRICK_GROUND);
+        game.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
         game.world.reset_opengl(l);
     });
 

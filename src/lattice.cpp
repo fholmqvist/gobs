@@ -184,15 +184,15 @@ void Lattice::apply_to_cube(Cube &c) {
 void Lattice::init_vertices() {
     u8 initialized = 0;
 
+    const float LS = (float)(LATTICE_SIZE - 1);
+
     for (size k = 0; k < LATTICE_SIZE; k++) {
         for (size j = 0; j < LATTICE_SIZE; j++) {
             for (size i = 0; i < LATTICE_SIZE; i++) {
                 size idx = get_index(i, j, k);
-                vec3 mix;
-                mix[0] = float_mix(bb_min[0], bb_max[0], (float)i / (float)(LATTICE_SIZE - 1));
-                mix[1] = float_mix(bb_min[1], bb_max[1], (float)j / (float)(LATTICE_SIZE - 1));
-                mix[2] = float_mix(bb_min[2], bb_max[2], (float)k / (float)(LATTICE_SIZE - 1));
-                vertices[idx] = mix;
+                vertices[idx] = { float_mix(bb_min[0], bb_max[0], (float)i / LS),
+                                  float_mix(bb_min[1], bb_max[1], (float)j / LS),
+                                  float_mix(bb_min[2], bb_max[2], (float)k / LS) };
                 initialized++;
             }
         }
