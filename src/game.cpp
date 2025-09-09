@@ -62,7 +62,7 @@ bool Game::init() {
 
     load_assets();
 
-    world.shader.init();
+    systems.world.shader.init();
     gui.init();
 
     running = true;
@@ -72,9 +72,9 @@ bool Game::init() {
 void Game::update() {
     GLOBAL_TIMER.reset();
 
-    running = input.update(level.width);
-    level.update();
-    liquids.update();
+    running = input.update(systems.level.width);
+    systems.level.update();
+    systems.liquids.update();
     gui.update();
     STATS.update(GLOBAL_TIMER.stop());
 }
@@ -84,8 +84,8 @@ void Game::render() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    world.shader.render(level);
-    liquids.render();
+    systems.world.shader.render(systems.level);
+    systems.liquids.render();
     gui.render();
 
     SDL_GL_SwapWindow(WINDOW);
