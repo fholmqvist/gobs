@@ -5,6 +5,7 @@
 #include "cube.hpp"
 #include "ivec2.hpp"
 #include "lattice.hpp"
+#include "random.hpp"
 
 Shader world_shader = Shader(
     "assets/shaders/grid_vs.glsl", "assets/shaders/grid_fs.glsl",
@@ -55,8 +56,8 @@ void World::set(ivec2 pos, TILE t) {
 }
 
 void World::set_square(ivec4 pos, TILE t) {
-    for (size y = pos.y; y < pos.w; y++) {
-        for (size x = pos.x; x < pos.z; x++) {
+    for (size y = pos.y; y < pos.w + 1; y++) {
+        for (size x = pos.x; x < pos.z + 1; x++) {
             set({ x, y }, t);
         }
     }
@@ -142,9 +143,7 @@ void set_cube(World &world, Cube &c, Lattice &l, u32 i, ivec2 pos, TileUV uv, in
     l.from_world_vertices(c.verts, true);
 
     const float y_offset = 0.0f;
-    l.add_slope_perlin(vec3{ (float)pos[0], 0, (float)pos[1] }, y_offset,
-                       1.0f); // TODO
-                              // PERLIN_DEFAULT_STRENGTH);
+    l.add_slope_perlin(vec3{ pos[0], 0, pos[1] }, y_offset, PERLIN_DEFAULT_STRENGTH);
 
     auto water =
         Neighbors::check(world.grid, wsize, pos, [](TILE t) { return t == TILE::WATER_GROUND; });

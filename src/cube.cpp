@@ -339,47 +339,35 @@ void faces_for_uv(WorldVertex* vs, u32 idx, TileUV uv, int wsize) {
     float ROW = (float)(u32)(idx / wsize);
 
     // FRONT
-    vs[0] = (WorldVertex){ { -0.5f, -0.5f, 0.5f }, { 0, 0, 1 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
-    vs[1] = (WorldVertex){ { -0.5f, 0.5f, 0.5f }, { 0, 0, 1 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
-    vs[2] = (WorldVertex){ { 0.5f, 0.5f, 0.5f }, { 0, 0, 1 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
-    vs[3] = (WorldVertex){ { 0.5f, -0.5f, 0.5f }, { 0, 0, 1 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
+    vs[0] = { { -0.5f, -0.5f, 0.5f }, { 0, 0, 1 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
+    vs[1] = { { -0.5f, 0.5f, 0.5f }, { 0, 0, 1 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
+    vs[2] = { { 0.5f, 0.5f, 0.5f }, { 0, 0, 1 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
+    vs[3] = { { 0.5f, -0.5f, 0.5f }, { 0, 0, 1 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
     // BACK
-    vs[4] =
-        (WorldVertex){ { 0.5f, -0.5f, -0.5f }, { 0, 0, -1 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
-    vs[5] = (WorldVertex){ { 0.5f, 0.5f, -0.5f }, { 0, 0, -1 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
-    vs[6] =
-        (WorldVertex){ { -0.5f, 0.5f, -0.5f }, { 0, 0, -1 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
-    vs[7] =
-        (WorldVertex){ { -0.5f, -0.5f, -0.5f }, { 0, 0, -1 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
+    vs[4] = { { 0.5f, -0.5f, -0.5f }, { 0, 0, -1 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
+    vs[5] = { { 0.5f, 0.5f, -0.5f }, { 0, 0, -1 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
+    vs[6] = { { -0.5f, 0.5f, -0.5f }, { 0, 0, -1 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
+    vs[7] = { { -0.5f, -0.5f, -0.5f }, { 0, 0, -1 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
     // LEFT
-    vs[8] =
-        (WorldVertex){ { -0.5f, -0.5f, -0.5f }, { -1, 0, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
-    vs[9] =
-        (WorldVertex){ { -0.5f, 0.5f, -0.5f }, { -1, 0, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
-    vs[10] =
-        (WorldVertex){ { -0.5f, 0.5f, 0.5f }, { -1, 0, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
-    vs[11] =
-        (WorldVertex){ { -0.5f, -0.5f, 0.5f }, { -1, 0, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
+    vs[8] = { { -0.5f, -0.5f, -0.5f }, { -1, 0, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
+    vs[9] = { { -0.5f, 0.5f, -0.5f }, { -1, 0, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
+    vs[10] = { { -0.5f, 0.5f, 0.5f }, { -1, 0, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
+    vs[11] = { { -0.5f, -0.5f, 0.5f }, { -1, 0, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
     // RIGHT
-    vs[12] = (WorldVertex){ { 0.5f, -0.5f, 0.5f }, { 1, 0, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
-    vs[13] = (WorldVertex){ { 0.5f, 0.5f, 0.5f }, { 1, 0, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
-    vs[14] = (WorldVertex){ { 0.5f, 0.5f, -0.5f }, { 1, 0, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
-    vs[15] =
-        (WorldVertex){ { 0.5f, -0.5f, -0.5f }, { 1, 0, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
+    vs[12] = { { 0.5f, -0.5f, 0.5f }, { 1, 0, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
+    vs[13] = { { 0.5f, 0.5f, 0.5f }, { 1, 0, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
+    vs[14] = { { 0.5f, 0.5f, -0.5f }, { 1, 0, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
+    vs[15] = { { 0.5f, -0.5f, -0.5f }, { 1, 0, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
     // TOP
-    vs[16] =
-        (WorldVertex){ { -0.5f, 0.5f, -0.5f }, { 0, 1, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 0 };
-    vs[17] = (WorldVertex){ { 0.5f, 0.5f, -0.5f }, { 0, 1, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 0 };
-    vs[18] = (WorldVertex){ { 0.5f, 0.5f, 0.5f }, { 0, 1, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
-    vs[19] = (WorldVertex){ { -0.5f, 0.5f, 0.5f }, { 0, 1, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
+    vs[16] = { { -0.5f, 0.5f, -0.5f }, { 0, 1, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 0 };
+    vs[17] = { { 0.5f, 0.5f, -0.5f }, { 0, 1, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 0 };
+    vs[18] = { { 0.5f, 0.5f, 0.5f }, { 0, 1, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 0 };
+    vs[19] = { { -0.5f, 0.5f, 0.5f }, { 0, 1, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 0 };
     // GROUND
-    vs[20] =
-        (WorldVertex){ { -0.5f, -0.5f, -0.5f }, { 0, 1, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
-    vs[21] =
-        (WorldVertex){ { 0.5f, -0.5f, -0.5f }, { 0, 1, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
-    vs[22] = (WorldVertex){ { 0.5f, -0.5f, 0.5f }, { 0, 1, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 1 };
-    vs[23] =
-        (WorldVertex){ { -0.5f, -0.5f, 0.5f }, { 0, 1, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 1 };
+    vs[20] = { { -0.5f, -0.5f, -0.5f }, { 0, 1, 0 }, { uv.x1, uv.y1 }, { COL, ROW }, 1 };
+    vs[21] = { { 0.5f, -0.5f, -0.5f }, { 0, 1, 0 }, { uv.x2, uv.y1 }, { COL, ROW }, 1 };
+    vs[22] = { { 0.5f, -0.5f, 0.5f }, { 0, 1, 0 }, { uv.x2, uv.y2 }, { COL, ROW }, 1 };
+    vs[23] = { { -0.5f, -0.5f, 0.5f }, { 0, 1, 0 }, { uv.x1, uv.y2 }, { COL, ROW }, 1 };
 }
 
 void Cube::fix_nbs_wall_uvs(World &world, Neighbors walls, int wsize) {

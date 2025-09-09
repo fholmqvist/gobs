@@ -2,7 +2,7 @@
 
 #include "cube.hpp"
 #include "neighbors.hpp"
-// #include "perlin.h"
+#include "random.hpp"
 #include "vec2.hpp"
 
 const int LATTICE_SIZE = 2;
@@ -69,20 +69,18 @@ void Lattice::from_world_vertices(std::array<WorldVertex, N_VERTS_PER_CUBE> &vs,
 }
 
 void Lattice::add_slope_perlin(vec3 pos, float y_offset, float y_scale) {
-    // PerlinCorners upper_verts;
-    // perlin_corners_init(&upper_verts, pos, PERLIN_U);
-    // PerlinCorners lower_verts;
-    // perlin_corners_init(&lower_verts, pos, PERLIN_D);
+    Perlins upper_verts(pos, PERLIN_U);
+    Perlins lower_verts(pos, PERLIN_D);
 
-    // vertices[ulb()][1] += (upper_verts.tl * y_scale) + y_offset;
-    // vertices[urb()][1] += (upper_verts.tr * y_scale) + y_offset;
-    // vertices[urf()][1] += (upper_verts.br * y_scale) + y_offset;
-    // vertices[ulf()][1] += (upper_verts.bl * y_scale) + y_offset;
+    vertices[ulb()][1] += (upper_verts.tl * y_scale) + y_offset;
+    vertices[urb()][1] += (upper_verts.tr * y_scale) + y_offset;
+    vertices[urf()][1] += (upper_verts.br * y_scale) + y_offset;
+    vertices[ulf()][1] += (upper_verts.bl * y_scale) + y_offset;
 
-    // vertices[dlb()][1] += (lower_verts.tl * y_scale) + y_offset;
-    // vertices[drb()][1] += (lower_verts.tr * y_scale) + y_offset;
-    // vertices[drf()][1] += (lower_verts.br * y_scale) + y_offset;
-    // vertices[dlf()][1] += (lower_verts.bl * y_scale) + y_offset;
+    vertices[dlb()][1] += (lower_verts.tl * y_scale) + y_offset;
+    vertices[drb()][1] += (lower_verts.tr * y_scale) + y_offset;
+    vertices[drf()][1] += (lower_verts.br * y_scale) + y_offset;
+    vertices[dlf()][1] += (lower_verts.bl * y_scale) + y_offset;
 }
 
 void Lattice::add_distortion_perlin(vec3 pos) {
@@ -240,34 +238,34 @@ float float_mix(float a, float b, float t) {
     return a * (1.0f - t) + b * t;
 }
 
-size ulb() {
+size Lattice::ulb() {
     return get_index(0, 1, 0);
 }
 
-size urb() {
+size Lattice::urb() {
     return get_index(1, 1, 0);
 }
 
-size drb() {
+size Lattice::drb() {
     return get_index(1, 0, 0);
 }
 
-size dlb() {
+size Lattice::dlb() {
     return get_index(0, 0, 0);
 }
 
-size ulf() {
+size Lattice::ulf() {
     return get_index(0, 1, 1);
 }
 
-size urf() {
+size Lattice::urf() {
     return get_index(1, 1, 1);
 }
 
-size dlf() {
+size Lattice::dlf() {
     return get_index(0, 0, 1);
 }
 
-size drf() {
+size Lattice::drf() {
     return get_index(1, 0, 1);
 }
