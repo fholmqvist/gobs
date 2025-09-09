@@ -3,9 +3,9 @@
 #include "cube.hpp"
 #include "neighbors.hpp"
 #include "random.hpp"
-#include "vec2.hpp"
 
 const int LATTICE_SIZE = 2;
+const float LS = (float)LATTICE_SIZE - 1;
 
 size get_index(size i, size j, size k);
 float float_mix(float a, float b, float t);
@@ -84,87 +84,84 @@ void Lattice::add_slope_perlin(vec3 pos, float y_offset, float y_scale) {
 }
 
 void Lattice::add_distortion_perlin(vec3 pos) {
-    // const float amount = 0.55f;
-    // const float strength = 0.032f;
+    const float amount = 0.55f;
+    const float strength = 0.032f;
 
-    // PerlinCorners upper_verts;
-    // perlin_corners_init_custom(&upper_verts, pos, amount, amount);
-    // PerlinCorners lower_verts;
-    // perlin_corners_init_custom(&lower_verts, pos, amount, amount);
+    Perlins upper_verts(pos, amount);
+    Perlins lower_verts(pos, amount);
 
-    // vertices[ulb()][0] += upper_verts.tl * strength;
-    // vertices[urb()][0] += upper_verts.tr * strength;
-    // vertices[urf()][0] += upper_verts.br * strength;
-    // vertices[ulf()][0] += upper_verts.bl * strength;
-    // vertices[dlb()][0] += lower_verts.tl * strength;
-    // vertices[drb()][0] += lower_verts.tr * strength;
-    // vertices[drf()][0] += lower_verts.br * strength;
-    // vertices[dlf()][0] += lower_verts.bl * strength;
+    vertices[ulb()][0] += upper_verts.tl * strength;
+    vertices[urb()][0] += upper_verts.tr * strength;
+    vertices[urf()][0] += upper_verts.br * strength;
+    vertices[ulf()][0] += upper_verts.bl * strength;
+    vertices[dlb()][0] += lower_verts.tl * strength;
+    vertices[drb()][0] += lower_verts.tr * strength;
+    vertices[drf()][0] += lower_verts.br * strength;
+    vertices[dlf()][0] += lower_verts.bl * strength;
 
-    // vertices[ulb()][1] += upper_verts.tl * strength;
-    // vertices[urb()][1] += upper_verts.tr * strength;
-    // vertices[urf()][1] += upper_verts.br * strength;
-    // vertices[ulf()][1] += upper_verts.bl * strength;
-    // vertices[dlb()][1] += lower_verts.tl * strength;
-    // vertices[drb()][1] += lower_verts.tr * strength;
-    // vertices[drf()][1] += lower_verts.br * strength;
-    // vertices[dlf()][1] += lower_verts.bl * strength;
+    vertices[ulb()][1] += upper_verts.tl * strength;
+    vertices[urb()][1] += upper_verts.tr * strength;
+    vertices[urf()][1] += upper_verts.br * strength;
+    vertices[ulf()][1] += upper_verts.bl * strength;
+    vertices[dlb()][1] += lower_verts.tl * strength;
+    vertices[drb()][1] += lower_verts.tr * strength;
+    vertices[drf()][1] += lower_verts.br * strength;
+    vertices[dlf()][1] += lower_verts.bl * strength;
 
-    // vertices[ulb()][2] += upper_verts.tl * strength;
-    // vertices[urb()][2] += upper_verts.tr * strength;
-    // vertices[urf()][2] += upper_verts.br * strength;
-    // vertices[ulf()][2] += upper_verts.bl * strength;
-    // vertices[dlb()][2] += lower_verts.tl * strength;
-    // vertices[drb()][2] += lower_verts.tr * strength;
-    // vertices[drf()][2] += lower_verts.br * strength;
-    // vertices[dlf()][2] += lower_verts.bl * strength;
+    vertices[ulb()][2] += upper_verts.tl * strength;
+    vertices[urb()][2] += upper_verts.tr * strength;
+    vertices[urf()][2] += upper_verts.br * strength;
+    vertices[ulf()][2] += upper_verts.bl * strength;
+    vertices[dlb()][2] += lower_verts.tl * strength;
+    vertices[drb()][2] += lower_verts.tr * strength;
+    vertices[drf()][2] += lower_verts.br * strength;
+    vertices[dlf()][2] += lower_verts.bl * strength;
 }
 
 void Lattice::add_offset(float amount) {
-    // vertices[ulb()][1] += amount;
-    // vertices[urb()][1] += amount;
-    // vertices[urf()][1] += amount;
-    // vertices[ulf()][1] += amount;
+    vertices[ulb()][1] += amount;
+    vertices[urb()][1] += amount;
+    vertices[urf()][1] += amount;
+    vertices[ulf()][1] += amount;
 
-    // vertices[dlb()][1] += amount;
-    // vertices[drb()][1] += amount;
-    // vertices[drf()][1] += amount;
-    // vertices[dlf()][1] += amount;
+    vertices[dlb()][1] += amount;
+    vertices[drb()][1] += amount;
+    vertices[drf()][1] += amount;
+    vertices[dlf()][1] += amount;
 }
 
 void Lattice::match_liquid_level(Neighbors nbs, float amount) {
-    // if (nbs_up(nbs)) {
-    //     vertices[dlb()][1] += amount;
-    //     vertices[drb()][1] += amount;
-    // } else if (nbs_right(nbs)) {
-    //     vertices[drb()][1] += amount;
-    //     vertices[drf()][1] += amount;
-    // } else if (nbs_down(nbs)) {
-    //     vertices[dlf()][1] += amount;
-    //     vertices[drf()][1] += amount;
-    // } else if (nbs_left(nbs)) {
-    //     vertices[dlb()][1] += amount;
-    //     vertices[dlf()][1] += amount;
-    // } else if (nbs_down_right(nbs)) {
-    //     vertices[drf()][1] += amount;
-    // } else if (nbs_up_right(nbs)) {
-    //     vertices[drb()][1] += amount;
-    // } else if (nbs_down_left(nbs)) {
-    //     vertices[dlf()][1] += amount;
-    // } else if (nbs_left(nbs)) {
-    //     vertices[dlb()][1] += amount;
-    //     vertices[dlf()][1] += amount;
-    // } else if (nbs_up_left(nbs)) {
-    //     vertices[dlb()][1] += amount;
-    // }
+    if (nbs.up()) {
+        vertices[dlb()][1] += amount;
+        vertices[drb()][1] += amount;
+    } else if (nbs.right()) {
+        vertices[drb()][1] += amount;
+        vertices[drf()][1] += amount;
+    } else if (nbs.down()) {
+        vertices[dlf()][1] += amount;
+        vertices[drf()][1] += amount;
+    } else if (nbs.left()) {
+        vertices[dlb()][1] += amount;
+        vertices[dlf()][1] += amount;
+    } else if (nbs.down_right()) {
+        vertices[drf()][1] += amount;
+    } else if (nbs.up_right()) {
+        vertices[drb()][1] += amount;
+    } else if (nbs.down_left()) {
+        vertices[dlf()][1] += amount;
+    } else if (nbs.left()) {
+        vertices[dlb()][1] += amount;
+        vertices[dlf()][1] += amount;
+    } else if (nbs.up_left()) {
+        vertices[dlb()][1] += amount;
+    }
 }
 
 void Lattice::apply_to_vertex(vec3 vert) {
     vec3 local = (vert - bb_min) / (bb_max - bb_min);
     glm::clamp(local, 0.0f, 0.999f);
 
-    vec3 grid = local * vec3{ (float)(LATTICE_SIZE - 1), (float)(LATTICE_SIZE - 1),
-                              (float)(LATTICE_SIZE - 1) };
+    vec3 grid = local * vec3{ LS, LS, LS };
 
     vec3 base = glm::floor(grid);
 
@@ -176,15 +173,15 @@ void Lattice::apply_to_vertex(vec3 vert) {
 void Lattice::apply_to_cube(Cube &c) {
     for (size i = 0; i < (size)c.verts.size(); i++) {
         vec3 vert = c.verts[i].pos;
+        printf("before %.2f %.2f %.2f\n", vert[0], vert[1], vert[2]);
         Lattice::apply_to_vertex(vert);
+        printf("after  %.2f %.2f %.2f\n", vert[0], vert[1], vert[2]);
         c.verts[i].pos[1] = vert[1];
     }
 }
 
 void Lattice::init_vertices() {
     u8 initialized = 0;
-
-    const float LS = (float)(LATTICE_SIZE - 1);
 
     for (size k = 0; k < LATTICE_SIZE; k++) {
         for (size j = 0; j < LATTICE_SIZE; j++) {
@@ -211,9 +208,9 @@ void Lattice::deform_vertex(vec3 base_index, vec3 weights, vec3 out) {
                 size j = (size)base_index[1] + dy;
                 size k = (size)base_index[2] + dz;
 
-                i = clamp(i, 0, LATTICE_SIZE - 1);
-                j = clamp(j, 0, LATTICE_SIZE - 1);
-                k = clamp(k, 0, LATTICE_SIZE - 1);
+                i = clamp(i, 0, LS);
+                j = clamp(j, 0, LS);
+                k = clamp(k, 0, LS);
 
                 vec3 pos = vertices[get_index(i, j, k)];
 
