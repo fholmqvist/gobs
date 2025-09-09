@@ -9,12 +9,11 @@ int main() {
     }
 
     game.level = Level(8);
-    game.level.init([&game](Level &l) {
+    game.level.init([](Level &l) {
         CAMERA->pos = vec3{ 3.5, 7, 8 };
-        game.world.init(l);
-        game.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
-        game.liquids.add(game.world, LIQUID::OIL, { 3, 3, 5, 5 });
-        game.world.reset_opengl(l);
+        l.world.set_square({ 1, 1, 7, 7 }, TILE::BRICK_GROUND);
+        l.add_liquid(LIQUID::OIL, { 3, 3, 5, 5 });
+        l.world.reset_opengl(l);
     });
 
     while (game.running) {

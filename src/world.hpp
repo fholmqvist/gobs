@@ -2,6 +2,7 @@
 
 #include "pch.hpp" // IWYU pragma: keep
 
+#include "base.hpp"
 #include "indexed_verts.hpp"
 #include "shader.hpp"
 #include "tile.hpp"

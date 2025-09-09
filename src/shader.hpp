@@ -2,7 +2,7 @@
 
 #include "pch.hpp" // IWYU pragma: keep
 
-#include "level.hpp"
+struct Level;
 
 struct Shader {
     u32 ID;

@@ -5,6 +5,7 @@
 #include "cube.hpp"
 #include "ivec2.hpp"
 #include "lattice.hpp"
+#include "level.hpp"
 #include "neighbors.hpp"
 #include "random.hpp"
 

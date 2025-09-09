@@ -1,14 +1,13 @@
 #pragma once
 
 #include "liquid.hpp"
-#include "world.hpp"
 
 struct Liquids {
     std::vector<Liquid> liquids;
 
     Liquids() = default;
 
-    ID add(World&, LIQUID, ivec4);
+    ID add(LIQUID type, ivec4 pos, int wsize);
     void update();
     void render();
 };

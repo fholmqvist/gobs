@@ -1,5 +1,6 @@
 #include "pch.hpp"
 
+#include "base.hpp"
 #include "shader.hpp"
 
 void Shader::init() {
