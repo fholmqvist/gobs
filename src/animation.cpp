@@ -29,7 +29,7 @@ Animation::Animation(std::string path, Mesh m) {
     duration = (float)node_anim->mDuration;
     tps = (float)node_anim->mTicksPerSecond;
 
-    global_inverse = aiMatrix4x4ToGlm(scene->mRootNode->mTransformation);
+    global_inverse = to_glm(scene->mRootNode->mTransformation);
     global_inverse = glm::inverse(global_inverse);
 
     root_node.transform = mat4(1);
@@ -66,7 +66,7 @@ void read_hierarchy_data(aiNode* src, AssimpNodeData &dst) {
     dst.name = src->mName.data;
     dst.children.reserve(src->mNumChildren);
 
-    dst.transform = aiMatrix4x4ToGlm(src->mTransformation);
+    dst.transform = to_glm(src->mTransformation);
 
     for (size i = 0; i < src->mNumChildren; i++) {
         AssimpNodeData child = {};

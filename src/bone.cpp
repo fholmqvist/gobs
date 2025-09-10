@@ -1,4 +1,6 @@
 #include "bone.hpp"
+#include "assimp.hpp"
+#include <glm/matrix.hpp>
 
 Bone::Bone(std::string _name, size index, aiNodeAnim &channel) {
     (void)channel;
@@ -7,136 +9,120 @@ Bone::Bone(std::string _name, size index, aiNodeAnim &channel) {
     name = _name;
     local_transform = mat4();
 
-    // for (size i = 0; i < npos; i++) {
-    //     KeyPos pos;
-    //     a_vec3_to_cglm(&channel->mPositionKeys[i].mValue, pos.pos);
-    //     pos.timestamp = (float)channel->mPositionKeys[i].mTime;
-    //     pos[i] = pos;
-    // }
+    for (size i = 0; i < channel.mNumPositionKeys; i++) {
+        KeyPos p;
+        p.pos = to_glm(channel.mPositionKeys[i].mValue);
+        p.timestamp = (float)channel.mPositionKeys[i].mTime;
+        pos[i] = p;
+    }
 
-    // for (size i = 0; i < nrot; i++) {
-    //     KeyRot rot;
-    //     a_quat_to_cglm(&channel->mRotationKeys[i].mValue, rot.orientation);
-    //     rot.timestamp = (float)channel->mRotationKeys[i].mTime;
-    //     rot[i] = rot;
-    // }
+    for (size i = 0; i < channel.mNumRotationKeys; i++) {
+        KeyRot r;
+        r.orientation = to_glm(channel.mRotationKeys[i].mValue);
+        r.timestamp = (float)channel.mRotationKeys[i].mTime;
+        rot[i] = r;
+    }
 
-    // for (size i = 0; i < nscale; i++) {
-    //     KeyScale scale;
-    //     a_vec3_to_cglm(&channel->mScalingKeys[i].mValue, scale.scale);
-    //     scale.timestamp = (float)channel->mScalingKeys[i].mTime;
-    //     b->scale[i] = scale;
-    // }
+    for (size i = 0; i < channel.mNumScalingKeys; i++) {
+        KeyScale s;
+        s.scale = to_glm(channel.mScalingKeys[i].mValue);
+        s.timestamp = (float)channel.mScalingKeys[i].mTime;
+        scale[i] = s;
+    }
 }
 
-// void interpolate_pos(Bone* b, float time, mat4 out);
-// void interpolate_rot(Bone* b, float time, mat4 out);
-// void interpolate_scale(Bone* b, float time, mat4 out);
+void interpolate_pos(Bone &b, float time, mat4 out);
+void interpolate_rot(Bone &b, float time, mat4 out);
+void interpolate_scale(Bone &b, float time, mat4 out);
 
-// size pos_index(const Bone* b, float time);
-// size rot_index(const Bone* b, float time);
-// size scale_index(const Bone* b, float time);
+size pos_index(const Bone &b, float time);
+size rot_index(const Bone &b, float time);
+size scale_index(const Bone &b, float time);
 
-// float scale_factor(float last_time, float next_time, float time);
+float scale_factor(float last_time, float next_time, float time);
 
-// void bone_update(Bone* b, float time) {
-//     mat4 translation;
-//     interpolate_pos(b, time, translation);
+mat4 interpolate_pos(Bone &b, float time) {
+    if (b.pos.size() == 1) {
+        return translate(mat4(1), b.pos[0].pos);
+    }
 
-//     mat4 rotation;
-//     interpolate_rot(b, time, rotation);
+    size i0 = pos_index(b, time);
+    size i1 = i0 + 1;
 
-//     mat4 scale;
-//     interpolate_scale(b, time, scale);
+    auto p0 = b.pos[i0];
+    auto p1 = b.pos[i1];
 
-//     mat4 tmp;
-//     glm_mat4_mul(rotation, scale, tmp);
-//     glm_mat4_mul(translation, tmp, b->local_transform);
-// }
+    float factor = scale_factor(p0.timestamp, p1.timestamp, time);
 
-// void interpolate_pos(Bone* b, float time, mat4 out) {
-//     if (b->npos == 1) {
-//         glm_translate_make(out, b->pos[0].pos);
-//         return;
-//     }
+    return translate(mat4(1), mix(p0.pos, p1.pos, factor));
+}
 
-//     size i0 = pos_index(b, time);
-//     size i1 = i0 + 1;
+mat4 interpolate_rot(Bone &b, float time) {
+    if (b.rot.size() == 1) {
+        quat q = b.rot[0].orientation;
+        q = normalize(q);
+        return mat4(q);
+    }
 
-//     float factor = scale_factor(b->pos[i0].timestamp, b->pos[i1].timestamp, time);
-//     vec3 interp;
-//     glm_vec3_lerp(b->pos[i0].pos, b->pos[i1].pos, factor, interp);
+    size_t i0 = rot_index(b, time);
+    size_t i1 = i0 + 1;
 
-//     glm_translate_make(out, interp);
-// }
+    float factor = scale_factor(b.rot[i0].timestamp, b.rot[i1].timestamp, time);
 
-// void interpolate_rot(Bone* b, float time, mat4 out) {
-//     if (b->nrot == 1) {
-//         versor q;
-//         glm_quat_normalize_to(b->rot[0].orientation, q);
-//         glm_quat_mat4(q, out);
-//         return;
-//     }
+    quat q0 = normalize(b.rot[i0].orientation);
+    quat q1 = normalize(b.rot[i1].orientation);
 
-//     size i0 = rot_index(b, time);
-//     size i1 = i0 + 1;
+    return mat4(normalize(slerp(q0, q1, factor)));
+}
 
-//     float factor = scale_factor(b->rot[i0].timestamp, b->rot[i1].timestamp, time);
-//     versor q;
-//     glm_quat_slerp(b->rot[i0].orientation, b->rot[i1].orientation, factor, q);
-//     glm_quat_normalize(q);
+mat4 interpolate_scale(Bone &b, float time) {
+    if (b.scale.size() == 1) {
+        return scale(mat4(1), b.scale[0].scale);
+    }
 
-//     glm_quat_mat4(q, out);
-// }
+    size_t i0 = scale_index(b, time);
+    size_t i1 = i0 + 1;
 
-// void interpolate_scale(Bone* b, float time, mat4 out) {
-//     if (b->nscale == 1) {
-//         glm_scale_make(out, b->scale[0].scale);
-//         return;
-//     }
+    float factor = scale_factor(b.scale[i0].timestamp, b.scale[i1].timestamp, time);
 
-//     size i0 = scale_index(b, time);
-//     size i1 = i0 + 1;
+    auto s0 = b.scale[i0].scale;
+    auto s1 = b.scale[i1].scale;
 
-//     float factor = scale_factor(b->scale[i0].timestamp, b->scale[i1].timestamp, time);
-//     vec3 interp;
-//     glm_vec3_lerp(b->scale[i0].scale, b->scale[i1].scale, factor, interp);
+    return glm::scale(mat4(1), mix(s0, s1, factor));
+}
 
-//     glm_scale_make(out, interp);
-// }
+size pos_index(Bone &b, float time) {
+    for (size i = 0; i < (size)b.pos.size() - 1; ++i) {
+        if (time < b.pos[i + 1].timestamp) {
+            return (int)i;
+        }
+    }
+    log_dang("Missing bone %d pos index", b.bone_index);
+    return 0;
+}
 
-// inline size pos_index(const Bone* b, float time) {
-//     for (size i = 0; i < b->npos - 1; ++i) {
-//         if (time < b->pos[i + 1].timestamp) {
-//             return (int)i;
-//         }
-//     }
-//     log_dang("Missing bone %d pos index", b->bone_index);
-//     return 0;
-// }
+size rot_index(Bone &b, float time) {
+    for (size i = 0; i < (size)b.rot.size() - 1; ++i) {
+        if (time < b.rot[i + 1].timestamp) {
+            return (int)i;
+        }
+    }
+    log_dang("Missing bone %d rot index", b.bone_index);
+    return 0;
+}
 
-// inline size rot_index(const Bone* b, float time) {
-//     for (size i = 0; i < b->nrot - 1; ++i) {
-//         if (time < b->rot[i + 1].timestamp) {
-//             return (int)i;
-//         }
-//     }
-//     log_dang("Missing bone %d rot index", b->bone_index);
-//     return 0;
-// }
+size scale_index(Bone &b, float time) {
+    for (size i = 0; i < (size)b.scale.size() - 1; ++i) {
+        if (time < b.scale[i + 1].timestamp) {
+            return (int)i;
+        }
+    }
+    log_dang("Missing bone %d scale index", b.bone_index);
+    return 0;
+}
 
-// inline size scale_index(const Bone* b, float time) {
-//     for (size i = 0; i < b->nscale - 1; ++i) {
-//         if (time < b->scale[i + 1].timestamp) {
-//             return (int)i;
-//         }
-//     }
-//     log_dang("Missing bone %d scale index", b->bone_index);
-//     return 0;
-// }
-
-// inline float scale_factor(float last_time, float next_time, float time) {
-//     float mid = time - last_time;
-//     float diff = next_time - last_time;
-//     return diff != 0.0f ? (mid / diff) : 0.0f;
-// }
+float scale_factor(float last_time, float next_time, float time) {
+    float mid = time - last_time;
+    float diff = next_time - last_time;
+    return diff != 0.0f ? (mid / diff) : 0.0f;
+}
