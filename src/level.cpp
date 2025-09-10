@@ -28,3 +28,7 @@ void Level::add_liquid(LIQUID type, ivec4 pos) {
     systems.world.set_square(pos, TILE::WATER_GROUND);
     systems.liquids.add(type, pos, width);
 }
+
+void Level::add_light(Light light) {
+    systems.lights.add(light);
+}

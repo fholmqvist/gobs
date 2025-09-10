@@ -24,4 +24,5 @@ struct Level {
     void render();
 
     void add_liquid(LIQUID, ivec4);
+    void add_light(Light);
 };
