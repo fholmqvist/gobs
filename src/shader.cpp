@@ -43,7 +43,7 @@ void store_glsl_helper(std::string path) {
     std::string result;
     std::ifstream file(path);
     if (!file.is_open()) {
-        throw std::runtime_error(frmt("Could not open file \"%s\"", path.c_str()));
+        throw std::runtime_error(frmt("Storing GLSL helper file: Could not open file \"%s\"", path.c_str()));
     }
 
     std::string line;
@@ -59,7 +59,7 @@ void store_glsl_helper(std::string path) {
 void read_shader_file(std::string &result, std::string filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        throw std::runtime_error(frmt("Could not open file \"%s\"", filename.c_str()));
+        throw std::runtime_error(frmt("Reading shader: Could not open file \"%s\"", filename.c_str()));
     }
 
     std::string line;
