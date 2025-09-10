@@ -45,7 +45,7 @@ Shader liquid_shader(
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        for (auto lq : l.systems.liquids.liquids) {
+        for (auto lq : l.systems.liquids.liquids.values) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, WATER_TEXTURE);
             glUniform1i(glGetUniformLocation(s.ID, "_texture"), 0);
@@ -68,14 +68,13 @@ void Liquids::init() {
     shader.init();
 }
 
-ID Liquids::add(LIQUID type, ivec4 pos, int wsize) {
+GID Liquids::add(LIQUID type, ivec4 pos, int wsize) {
     Liquid lq(type, (ivec4){ pos[0] - 1, pos[1] - 1, pos[2] + 1, pos[3] + 1 }, wsize);
-    liquids.emplace_back(lq);
-    return lq.id;
+    return liquids.add(lq);
 }
 
 void Liquids::update() {
-    for (auto liquid : liquids) {
+    for (auto liquid : liquids.values) {
         liquid.update();
     }
 }
