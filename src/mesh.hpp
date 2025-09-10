@@ -16,7 +16,7 @@ struct Mesh {
 
     // TODO: Expensive to duplicate, extract.
     std::unordered_map<std::string, BoneInfo> table;
-
-    Mesh for_type(MESH);
-    static Mesh from_scene_node(MESH, const aiScene*, const aiNode*);
 };
+
+static Mesh for_type(MESH);
+static Mesh from_scene_node(MESH, const aiScene*, const aiNode*);

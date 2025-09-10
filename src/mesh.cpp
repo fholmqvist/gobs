@@ -3,7 +3,9 @@
 #include <assimp/matrix4x4.h>
 #include <assimp/mesh.h>
 
-Mesh Mesh::for_type(MESH type) {
+Mesh from_scene_node(MESH type, const aiScene* scene, aiNode* node);
+
+Mesh for_type(MESH type) {
     std::string file;
     switch (type) {
         case MESH::SKAL:
@@ -43,13 +45,13 @@ Mesh Mesh::for_type(MESH type) {
         log_dang("%s: no meshes found", file.c_str());
     }
 
-    return Mesh::from_scene_node(type, scene, node);
+    return from_scene_node(type, scene, node);
 }
 
 void set_bone_vertex_data(BoneVertex &b, size bone_index, float weight);
 mat4 aiMatrix4x4ToGlm(const aiMatrix4x4 &);
 
-static Mesh from_scene_node(MESH type, const aiScene* scene, aiNode* node) {
+Mesh from_scene_node(MESH type, const aiScene* scene, aiNode* node) {
     u32 texture_id = 0;
     switch (type) {
         case MESH::SKAL:
