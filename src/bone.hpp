@@ -35,6 +35,6 @@ struct Bone {
 };
 
 struct BoneInfo {
-    const size index;
+    size index;
     mat4 offset;
 };
