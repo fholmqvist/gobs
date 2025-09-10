@@ -3,9 +3,7 @@
 #include "assimp.hpp"
 #include "constants.hpp"
 
-Mesh from_scene_node(MESH type, const aiScene* scene, aiNode* node);
-
-Mesh for_type(MESH type) {
+Mesh mesh_for_type(MESH type) {
     std::string file;
     switch (type) {
         case MESH::SKAL:
@@ -45,12 +43,12 @@ Mesh for_type(MESH type) {
         log_dang("%s: no meshes found", file.c_str());
     }
 
-    return from_scene_node(type, scene, node);
+    return mesh_from_scene_node(type, scene, node);
 }
 
 void set_bone_vertex_data(BoneVertex &b, size bone_index, float weight);
 
-Mesh from_scene_node(MESH type, const aiScene* scene, aiNode* node) {
+Mesh mesh_from_scene_node(MESH type, const aiScene* scene, aiNode* node) {
     u32 texture_id = 0;
     switch (type) {
         case MESH::SKAL:
@@ -122,7 +120,7 @@ Mesh from_scene_node(MESH type, const aiScene* scene, aiNode* node) {
             index = result->second.index;
         } else {
             aiMatrix4x4 mat = mesh->mBones[bidx]->mOffsetMatrix;
-            BoneInfo info = { .index = (i16)m.table.size(), .offset = aiMatrix4x4ToGlm(mat) };
+            BoneInfo info = { .index = (i16)m.table.size(), .offset = to_glm(mat) };
             index = info.index;
             m.table.insert({ name, info });
         }

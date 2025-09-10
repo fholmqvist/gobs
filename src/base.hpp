@@ -16,6 +16,12 @@ typedef size_t usize;
 
 typedef u64 ID;
 
+#ifndef M_PI
+#define M_PI (float)3.14159265358979323846
+#endif
+
+#define DEG2RAD(x) ((x) * (M_PI / 180.0f))
+
 void log_info(const char* fmt, ...);
 void log_dang(const char* fmt, ...);
 std::string frmt(const char* fmt, ...);

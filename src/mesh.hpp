@@ -18,5 +18,5 @@ struct Mesh {
     std::unordered_map<std::string, BoneInfo> table;
 };
 
-static Mesh for_type(MESH);
-static Mesh from_scene_node(MESH, const aiScene*, const aiNode*);
+Mesh mesh_for_type(MESH);
+Mesh mesh_from_scene_node(MESH, const aiScene*, const aiNode*);
