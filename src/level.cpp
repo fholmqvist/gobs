@@ -16,12 +16,11 @@ void Level::init() {
 }
 
 void Level::update() {
-    systems.liquids.update();
+    systems.update();
 }
 
 void Level::render() {
-    systems.world.shader.render(*this);
-    systems.liquids.render(*this);
+    systems.render(*this);
 }
 
 void Level::add_liquid(LIQUID type, ivec4 pos) {

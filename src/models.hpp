@@ -1,17 +1,18 @@
 #pragma once
 
-#include "camera.hpp"
-#include "lights.hpp"
 #include "model.hpp"
 #include "shader.hpp"
 #include "storage.hpp"
 #include "vertices.hpp"
 
+extern Shader model_shader;
+
 struct Models {
-    Shader s;
+    Shader shader;
     Storage<Model> ms;
 
-    void render(Camera &, Lights &);
+    Models() : shader(model_shader) {};
+
     void update();
     GID add(std::vector<WorldVertex> &grid, MESH, vec3 pos, vec3 rot, float scale, int wsize);
 };
