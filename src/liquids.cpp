@@ -69,7 +69,7 @@ void Liquids::init() {
 }
 
 GID Liquids::add(LIQUID type, ivec4 pos, int wsize) {
-    Liquid lq(type, (ivec4){ pos[0] - 1, pos[1] - 1, pos[2] + 1, pos[3] + 1 }, wsize);
+    auto lq = Liquid(type, pos + (ivec4){ -1, -1, 1, 1 }, wsize);
     return liquids.add(lq);
 }
 
@@ -79,7 +79,6 @@ void Liquids::update() {
     }
 }
 
-// TODO: Liquids shader.
 void Liquids::render(Level &l) {
     shader.render(l);
 }
