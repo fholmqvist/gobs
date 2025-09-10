@@ -31,13 +31,21 @@ Bone::Bone(std::string _name, size index, aiNodeAnim &channel) {
     }
 }
 
-void interpolate_pos(Bone &b, float time, mat4 out);
-void interpolate_rot(Bone &b, float time, mat4 out);
-void interpolate_scale(Bone &b, float time, mat4 out);
+mat4 interpolate_pos(Bone &b, float time);
+mat4 interpolate_rot(Bone &b, float time);
+mat4 interpolate_scale(Bone &b, float time);
 
-size pos_index(const Bone &b, float time);
-size rot_index(const Bone &b, float time);
-size scale_index(const Bone &b, float time);
+void Bone::update(float time) {
+    mat4 translation = interpolate_pos(*this, time);
+    mat4 rotation = interpolate_rot(*this, time);
+    mat4 scale = interpolate_scale(*this, time);
+
+    local_transform = translation * rotation * scale;
+}
+
+size pos_index(Bone &b, float time);
+size rot_index(Bone &b, float time);
+size scale_index(Bone &b, float time);
 
 float scale_factor(float last_time, float next_time, float time);
 
