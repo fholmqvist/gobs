@@ -16,6 +16,8 @@ bool Game::init() {
 
     load_assets();
 
+    store_glsl_helper("assets/shaders/helpers.glsl");
+
     gui.init();
     level.init();
 
@@ -32,7 +34,7 @@ void Game::update() {
     STATS.update(GLOBAL_TIMER.stop());
 }
 
-void Game::render(Window& window) {
+void Game::render(Window &window) {
     GLOBAL_TIMER.reset();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

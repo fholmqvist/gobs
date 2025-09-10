@@ -1,5 +1,7 @@
 #version 330 core
 
+#include "helpers.glsl"
+
 layout (location = 0) in vec3  pos;
 layout (location = 1) in vec3  normal;
 layout (location = 2) in vec2  uv;
@@ -34,10 +36,6 @@ layout(std140) uniform Lights {
     vec4 header; // x = count
     Light lights[64];
 };
-
-vec4 to_low_precision(vec4 position);
-float attenuation(float dist, float radius);
-mat4 model_matrix(vec3 position, vec3 rotation, float scale);
 
 void main() {
     vec4 bone_pos    = vec4(0.0);
