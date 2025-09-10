@@ -1,4 +1,5 @@
 #include "window.hpp"
+
 #include "constants.hpp"
 #include "timer.hpp"
 
