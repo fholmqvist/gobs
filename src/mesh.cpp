@@ -2,6 +2,7 @@
 
 #include "assimp.hpp"
 #include "constants.hpp"
+#include <iostream>
 
 Mesh mesh_for_type(MESH type) {
     std::string file;
@@ -66,10 +67,8 @@ Mesh mesh_from_scene_node(MESH type, const aiScene* scene, const aiNode* node) {
     for (size i = 0; i < mesh->mNumVertices; i++) {
         BoneVertex b = {};
 
-        for (size bidx = 0; bidx < BONE_MAX_PER_VERTEX; bidx++) {
-            b.bone_indexes[bidx] = -1;
-            b.bone_weights[bidx] = 0.0f;
-        }
+        b.bone_indexes.fill(-1);
+        b.bone_weights.fill(0.0f);
 
         vec3 temp;
 
@@ -107,6 +106,8 @@ Mesh mesh_from_scene_node(MESH type, const aiScene* scene, const aiNode* node) {
         /*                                    COLOR                                   */
         /* -------------------------------------------------------------------------- */
         b.color = 1.0f;
+
+        m.verts.push_back(b);
     }
 
     /* -------------------------------------------------------------------------- */
