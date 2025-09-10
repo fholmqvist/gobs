@@ -33,3 +33,8 @@ struct Bone {
 
     void update(float time);
 };
+
+struct BoneInfo {
+    const size index;
+    mat4 offset;
+};

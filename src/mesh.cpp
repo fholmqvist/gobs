@@ -1,0 +1,165 @@
+#include "mesh.hpp"
+#include "constants.hpp"
+#include <assimp/matrix4x4.h>
+#include <assimp/mesh.h>
+
+Mesh Mesh::for_type(MESH type) {
+    std::string file;
+    switch (type) {
+        case MESH::SKAL:
+            file = "assets/models/bones.fbx";
+            break;
+        default:
+            log_dang("Unrecognized mesh type %d", type);
+            break;
+    }
+
+    Assimp::Importer import;
+
+    const aiScene* scene = import.ReadFile(
+        file.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_FlipUVs |
+                          aiProcess_ImproveCacheLocality | aiProcess_GlobalScale);
+
+    if (!scene) {
+        log_dang("Missing model file %s", file.c_str());
+    }
+
+    if (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+        log_dang("%s: %s", file.c_str(), import.GetErrorString());
+    }
+
+    aiNode* node = scene->mRootNode;
+    while (node->mNumMeshes == 0) {
+        for (size i = 0; i < node->mNumChildren; i++) {
+            aiNode* child = node->mChildren[i];
+            if (child->mNumMeshes == 0) {
+                continue;
+            }
+            node = child;
+        }
+    }
+
+    if (!node) {
+        log_dang("%s: no meshes found", file.c_str());
+    }
+
+    return Mesh::from_scene_node(type, scene, node);
+}
+
+void set_bone_vertex_data(BoneVertex &b, size bone_index, float weight);
+mat4 aiMatrix4x4ToGlm(const aiMatrix4x4 &);
+
+static Mesh from_scene_node(MESH type, const aiScene* scene, aiNode* node) {
+    u32 texture_id = 0;
+    switch (type) {
+        case MESH::SKAL:
+            texture_id = SKAL_TEXTURE;
+            break;
+        default:
+            log_dang("Unrecognized mesh type %d", type);
+            break;
+    }
+    Mesh m = {};
+    m.texture_id = texture_id;
+
+    aiMesh* mesh = scene->mMeshes[node->mMeshes[(unsigned int)0]];
+
+    for (size i = 0; i < mesh->mNumVertices; i++) {
+        BoneVertex b = {};
+
+        for (size bidx = 0; bidx < BONE_MAX_PER_VERTEX; bidx++) {
+            b.bone_indexes[bidx] = -1;
+            b.bone_weights[bidx] = 0.0f;
+        }
+
+        vec3 temp;
+
+        /* -------------------------------------------------------------------------- */
+        /*                                     POS                                    */
+        /* -------------------------------------------------------------------------- */
+        temp[0] = mesh->mVertices[i].x;
+        temp[1] = mesh->mVertices[i].y;
+        temp[2] = mesh->mVertices[i].z;
+        b.pos = temp;
+
+        /* -------------------------------------------------------------------------- */
+        /*                                   NORMAL                                   */
+        /* -------------------------------------------------------------------------- */
+        if (mesh->mNormals) {
+            temp[0] = mesh->mNormals[i].x;
+            temp[1] = mesh->mNormals[i].y;
+            temp[2] = mesh->mNormals[i].z;
+            b.norm = temp;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*                                     UVS                                    */
+        /* -------------------------------------------------------------------------- */
+        if (mesh->mTextureCoords[0]) {
+            vec2 uv;
+            uv[0] = mesh->mTextureCoords[0][i].x;
+            uv[1] = mesh->mTextureCoords[0][i].y;
+            b.uv = uv;
+        } else {
+            b.uv = { 0, 0 };
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /*                                    COLOR                                   */
+        /* -------------------------------------------------------------------------- */
+        b.color = 1.0f;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                    BONES                                   */
+    /* -------------------------------------------------------------------------- */
+    for (size bidx = 0; bidx < mesh->mNumBones; bidx++) {
+        size index = -1;
+        std::string name = mesh->mBones[bidx]->mName.data;
+
+        if (auto result = m.table.find(name); result != m.table.end()) {
+            index = result->second.index;
+        } else {
+            aiMatrix4x4 mat = mesh->mBones[bidx]->mOffsetMatrix;
+            BoneInfo info = { .index = (i16)m.table.size(), .offset = aiMatrix4x4ToGlm(mat) };
+            index = info.index;
+            m.table.insert({ name, info });
+        }
+        assert(index != -1);
+
+        aiVertexWeight* weights = mesh->mBones[bidx]->mWeights;
+        for (size widx = 0; widx < mesh->mBones[bidx]->mNumWeights; widx++) {
+            u32 v_id = weights[widx].mVertexId;
+            float weight = weights[widx].mWeight;
+            set_bone_vertex_data(m.verts[v_id], index, weight);
+        }
+    }
+
+    for (size i = 0; i < mesh->mNumFaces; i++) {
+        aiFace face = mesh->mFaces[i];
+        for (size j = 0; j < face.mNumIndices; j++) {
+            m.indices.push_back((u16)face.mIndices[j]);
+        }
+    }
+
+    assert(m.verts.size() > 0);
+    assert(m.indices.size() > 0);
+
+    return m;
+}
+
+void set_bone_vertex_data(BoneVertex &b, size bone_index, float weight) {
+    for (size i = 0; i < BONE_MAX_PER_VERTEX; i++) {
+        if (b.bone_indexes[i] < 0) {
+            assert(bone_index < CHAR_MAX);
+            b.bone_indexes[i] = (i8)bone_index;
+            b.bone_weights[i] = weight;
+            break;
+        }
+    }
+}
+
+inline mat4 aiMatrix4x4ToGlm(const aiMatrix4x4 &m) {
+    return mat4(m.a1, m.b1, m.c1, m.d1, m.a2, m.b2, m.c2, m.d2, m.a3, m.b3, m.c3, m.d3, m.a4, m.b4,
+                m.c4, m.d4);
+}
