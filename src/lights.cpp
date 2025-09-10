@@ -4,27 +4,27 @@ void Lights::add(Light l) {
     lights.add(l);
 }
 
-LightUBO Lights::pack() {
+LightUBO Lights::pack(std::vector<Light> ls) {
     LightUBO out;
-    out.header[0] = (float)lights.values.size();
+    out.header[0] = (float)ls.size();
 
     // pos(vec4):    xyz = position, w = 0
     // color(vec4):  rgb = color (linear), a = intensity
     // params(vec4): x   = radius, yzw unused
-    for (size i = 0; i < (size)lights.values.size(); ++i) {
+    for (size i = 0; i < (size)ls.size(); ++i) {
         size base = i * 12; // 3 vec4s
         // pos
-        out.data[base + 0] = lights.values[i].pos[0];
-        out.data[base + 1] = lights.values[i].pos[1];
-        out.data[base + 2] = lights.values[i].pos[2];
+        out.data[base + 0] = ls[i].pos[0];
+        out.data[base + 1] = ls[i].pos[1];
+        out.data[base + 2] = ls[i].pos[2];
         out.data[base + 3] = 0.0f;
         // color and intensity
-        out.data[base + 4] = lights.values[i].color[0];
-        out.data[base + 5] = lights.values[i].color[1];
-        out.data[base + 6] = lights.values[i].color[2];
-        out.data[base + 7] = lights.values[i].intensity;
+        out.data[base + 4] = ls[i].color[0];
+        out.data[base + 5] = ls[i].color[1];
+        out.data[base + 6] = ls[i].color[2];
+        out.data[base + 7] = ls[i].intensity;
         // params (radius)
-        out.data[base + 8] = lights.values[i].radius;
+        out.data[base + 8] = ls[i].radius;
         out.data[base + 9] = 0.0f;
         out.data[base + 10] = 0.0f;
         out.data[base + 11] = 0.0f;

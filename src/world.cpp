@@ -1,5 +1,6 @@
 #include "world.hpp"
 
+#include "bounds.hpp"
 #include "camera.hpp"
 #include "constants.hpp"
 #include "cube.hpp"
@@ -44,6 +45,22 @@ Shader world_shader = Shader(
         int view_projection = glGetUniformLocation(s.ID, "view_projection");
         glUniformMatrix4fv(view_projection, 1, GL_FALSE,
                            value_ptr(PERSPECTIVE * CAMERA->view_matrix()));
+
+        // TODO: Get sphere bound from grid.
+        // TODO: Perhaps there's a simpler comparison?
+        // TODO: This needs to be done per vertex!
+        {
+            SphereBound obj_bound;
+            obj_bound.radius = 20.0f;
+            obj_bound.pos = { 8, 1, 8 };
+
+            auto lights = l.systems.lights.build(obj_bound);
+            LightUBO pack = l.systems.lights.pack(lights);
+
+            glBindBuffer(GL_UNIFORM_BUFFER, s.UBO);
+            usize bytes = sizeof(pack.header) + (usize)lights.size() * 12 * sizeof(float);
+            glBufferSubData(GL_UNIFORM_BUFFER, 0, (size)bytes, &pack);
+        }
 
         glDrawElements(GL_TRIANGLES, (GLsizei)l.n_indices, GL_UNSIGNED_INT, 0);
     });

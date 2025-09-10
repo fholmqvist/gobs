@@ -25,7 +25,7 @@ void main() {
 
 vec4 posterize(vec4 color) {
     float gamma = 0.6;
-    float num_colors = 64.0;
+    float num_colors = 16.0;
 
     vec3 color_out = color.rgb;
     color_out = pow(color_out, vec3(gamma));

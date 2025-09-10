@@ -8,8 +8,7 @@ void Level::init() {
 
     GLOBAL_TIMER.reset();
 
-    systems.world.init(*this);
-    systems.liquids.init();
+    systems.init(*this);
 
     initf(*this);
 
