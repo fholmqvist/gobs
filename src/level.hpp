@@ -25,4 +25,5 @@ struct Level {
 
     void add_liquid(LIQUID, ivec4);
     void add_light(Light);
+    void add_model(MESH type, vec3 pos, vec3 rot, float scale);
 };

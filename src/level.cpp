@@ -31,3 +31,7 @@ void Level::add_liquid(LIQUID type, ivec4 pos) {
 void Level::add_light(Light light) {
     systems.lights.add(light);
 }
+
+void Level::add_model(MESH type, vec3 pos, vec3 rot, float scale) {
+    systems.models.add(systems.world.verts.verts, type, pos, rot, scale, width);
+}

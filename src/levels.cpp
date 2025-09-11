@@ -9,11 +9,10 @@ LevelF debug_level = []() {
         l.add_liquid(LIQUID::WATER, { 3, 3, 5, 5 });
         l.systems.world.reset_opengl(l);
         l.add_light({ { 1.5, 1, 1.5 }, { 1, 0, 0 }, 4, 4 });
-        l.add_light({ { 7, 1, 1 }, { 0, 1, 0 }, 4, 4 });
-        l.add_light({ { 1, 1, 7 }, { 1, 1, 0 }, 4, 4 });
-        l.add_light({ { 7, 1, 7 }, { 0, 0, 1 }, 4, 4 });
-        l.systems.models.add(l.systems.world.verts.verts, MESH::GOB, { 1, 1, 1 }, vec3(0), 1.0,
-                             l.width);
+        l.add_light({ { 5.5, 1, 1.5 }, { 0, 1, 0 }, 4, 4 });
+        l.add_light({ { 1.5, 1, 5.5 }, { 1, 1, 0 }, 4, 4 });
+        l.add_light({ { 5.5, 1, 5.5 }, { 0, 0, 1 }, 4, 4 });
+        l.add_model(MESH::GOB, { 1, 1, 1 }, vec3(0), 1.0);
         // TODO:
         // l.systems.models.models.values[0].animator.play(
         //     l.systems.animations.get(ANIMATION::SQUATS));
