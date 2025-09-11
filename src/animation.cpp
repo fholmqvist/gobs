@@ -53,9 +53,13 @@ void Animation::read_missing_bones(aiAnimation* node_anim, Mesh* m) {
     for (size i = 0; i < node_anim->mNumChannels; i++) {
         aiNodeAnim* ch = node_anim->mChannels[i];
         std::string name = ch->mNodeName.data;
-        BoneInfo info = { .index = (size)mtable.size(), .offset = mat4(1) };
-        mtable.insert_or_assign(name, info);
-        bones.push_back(Bone(name, info.index, ch));
+        if (auto bi = mtable.find(name); bi != mtable.end()) {
+            bones.push_back(Bone(name, bi->second.index, ch));
+        } else {
+            BoneInfo info = { .index = (size)mtable.size(), .offset = mat4(1) };
+            mtable.insert_or_assign(name, info);
+            bones.push_back(Bone(name, info.index, ch));
+        }
     }
 
     table = mtable;
