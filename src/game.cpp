@@ -58,7 +58,7 @@ void Game::load_assets() {
     load_texture("assets/textures/rail_cart.png", &RAIL_CART_TEXTURE, GL_RGB);
     load_texture("assets/textures/pipes.psd", &PIPE_TEXTURE, GL_RGBA);
 
-    load_texture("assets/textures/gob.psd", &GOB_TEXTURE, GL_RGBA);
+    load_texture("assets/textures/gob.png", &GOB_TEXTURE, GL_RGB);
 
     log_info("Loaded assets in %s", time_to_string(GLOBAL_TIMER.stop()).c_str());
 }
