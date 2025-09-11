@@ -10,6 +10,7 @@ void Systems::init(Level &l) {
 
 void Systems::update() {
     liquids.update();
+    models.update();
 }
 
 void Systems::render(Level &l) {
