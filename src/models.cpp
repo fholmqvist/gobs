@@ -38,7 +38,7 @@ Shader model_shader(
         glUniformMatrix4fv(view_projection, 1, GL_FALSE,
                            value_ptr(PERSPECTIVE * CAMERA->view_matrix()));
 
-        for (auto &model : l.systems.models.ms.values) {
+        for (auto &model : l.systems.models.models.values) {
             Mesh mesh = model.mesh;
 
             {
@@ -81,20 +81,24 @@ Shader model_shader(
         glCullFace(GL_FRONT);
     });
 
+void Models::init() {
+    meshes.init();
+}
+
 void Models::update() {
-    for (auto &m : ms.values) {
+    for (auto &m : models.values) {
         m.update();
     }
 }
 
 GID Models::add(std::vector<WorldVertex> &grid, MESH type, vec3 pos, vec3 rot, float scale,
                 int wsize) {
-    Model model(type, pos, rot, scale);
+    Model model(meshes.get(type), type, pos, rot, scale);
 
     vec3 normal;
     float avg_height = sample_floor_y(grid, pos[0], pos[2], wsize, normal);
     float floor_y = avg_height;
     model.move(vec2(0), floor_y, normal);
 
-    return ms.add(model);
+    return models.add(model);
 }

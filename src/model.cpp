@@ -2,9 +2,9 @@
 
 #include "mesh.hpp"
 
-Model::Model(MESH _type, vec3 _pos, vec3 _rot, float _scale) {
+Model::Model(Mesh _mesh, MESH _type, vec3 _pos, vec3 _rot, float _scale) {
     type = _type;
-    mesh = mesh_for_type(type);
+    mesh = _mesh;
     pos = _pos;
     _rot[1] = DEG2RAD(_rot[1]);
     rot = _rot;

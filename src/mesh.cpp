@@ -2,7 +2,6 @@
 
 #include "assimp.hpp"
 #include "constants.hpp"
-#include <iostream>
 
 Mesh mesh_for_type(MESH type) {
     std::string file;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "animations.hpp"
 #include "lights.hpp"
 #include "liquids.hpp"
 #include "models.hpp"
@@ -10,11 +11,9 @@ struct Systems {
     Liquids liquids;
     World world;
     Models models;
+    Animations animations;
 
-    // TODO: Temporary.
-    Animation animation;
-
-    void init(Level&);
+    void init(Level &);
     void update();
-    void render(Level&);
+    void render(Level &);
 };
