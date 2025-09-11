@@ -5,7 +5,7 @@
 #include "sample_grid.hpp"
 
 Shader model_shader(
-    "assets/shaders/model_vs.glsl", "assets/shaders/grid_fs.glsl",
+    "assets/shaders/model_vs.glsl", "assets/shaders/model_fs.glsl",
     [](Shader &s) {
         GLsizei stride = sizeof(BoneVertex);
 

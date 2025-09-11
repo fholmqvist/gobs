@@ -1,3 +1,14 @@
+vec4 model_color(float _vcolor, vec3 _light, sampler2D _texture, vec2 _uv) {
+    vec3 vcolor = vec3(_vcolor * 1.0, _vcolor * 0.9, _vcolor * 0.8);
+    vec3 ambient = vec3(1.0, 0.7, 0.5) * 1.0; //0.08;
+    vec3 texture_color = texture(_texture, _uv).rgb;
+
+    // NOTE: Ensure that light_color never exceeds 1.0.
+    vec3 light_color = (_light * 0.9) + ambient;
+
+    return vec4(texture_color * light_color * vcolor, 1);
+}
+
 vec4 posterize(vec4 color, float num_colors) {
     float gamma = 0.6;
 

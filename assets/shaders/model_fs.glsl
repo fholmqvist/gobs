@@ -12,5 +12,5 @@ out vec4 FragColor;
 
 void main() {
     vec4 color = model_color(_vcolor, _light, _texture, _uv);
-    FragColor = posterize(color, 16.0);
+    FragColor = posterize(color, 64.0);
 }
