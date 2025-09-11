@@ -2,32 +2,31 @@
 #include "assimp.hpp"
 #include <glm/matrix.hpp>
 
-Bone::Bone(std::string _name, size index, aiNodeAnim &channel) {
-    (void)channel;
+Bone::Bone(std::string _name, size index, aiNodeAnim* ch) {
 
     bone_index = index;
     name = _name;
     local_transform = mat4();
 
-    for (size i = 0; i < channel.mNumPositionKeys; i++) {
+    for (size i = 0; i < ch->mNumPositionKeys; i++) {
         KeyPos p;
-        p.pos = to_glm(channel.mPositionKeys[i].mValue);
-        p.timestamp = (float)channel.mPositionKeys[i].mTime;
-        pos[i] = p;
+        p.pos = to_glm(ch->mPositionKeys[i].mValue);
+        p.timestamp = (float)ch->mPositionKeys[i].mTime;
+        pos.push_back(p);
     }
 
-    for (size i = 0; i < channel.mNumRotationKeys; i++) {
+    for (size i = 0; i < ch->mNumRotationKeys; i++) {
         KeyRot r;
-        r.orientation = to_glm(channel.mRotationKeys[i].mValue);
-        r.timestamp = (float)channel.mRotationKeys[i].mTime;
-        rot[i] = r;
+        r.orientation = to_glm(ch->mRotationKeys[i].mValue);
+        r.timestamp = (float)ch->mRotationKeys[i].mTime;
+        rot.push_back(r);
     }
 
-    for (size i = 0; i < channel.mNumScalingKeys; i++) {
+    for (size i = 0; i < ch->mNumScalingKeys; i++) {
         KeyScale s;
-        s.scale = to_glm(channel.mScalingKeys[i].mValue);
-        s.timestamp = (float)channel.mScalingKeys[i].mTime;
-        scale[i] = s;
+        s.scale = to_glm(ch->mScalingKeys[i].mValue);
+        s.timestamp = (float)ch->mScalingKeys[i].mTime;
+        scale.push_back(s);
     }
 }
 

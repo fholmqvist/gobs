@@ -5,7 +5,7 @@
 
 void read_hierarchy_data(aiNode* src, AssimpNodeData &dst);
 
-Animation::Animation(std::string path, Mesh m) {
+Animation::Animation(std::string path, Mesh &m) {
     Assimp::Importer import;
 
     const aiScene* scene = import.ReadFile(
@@ -51,11 +51,11 @@ void Animation::read_missing_bones(aiAnimation* node_anim, Mesh* m) {
     auto mtable = m->table;
 
     for (size i = 0; i < node_anim->mNumChannels; i++) {
-        aiNodeAnim* channel = node_anim->mChannels[i];
-        std::string name = channel->mNodeName.data;
+        aiNodeAnim* ch = node_anim->mChannels[i];
+        std::string name = ch->mNodeName.data;
         BoneInfo info = { .index = (size)mtable.size(), .offset = mat4(1) };
         mtable.insert_or_assign(name, info);
-        bones.push_back(Bone(name, info.index, *channel));
+        bones.push_back(Bone(name, info.index, ch));
     }
 
     table = mtable;

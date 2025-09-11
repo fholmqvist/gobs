@@ -29,7 +29,7 @@ struct Bone {
 
     mat4 local_transform;
 
-    Bone(std::string name, size index, aiNodeAnim &channel);
+    Bone(std::string name, size index, aiNodeAnim* channel);
 
     void update(float time);
 };

@@ -14,5 +14,7 @@ LevelF debug_level = []() {
         l.add_light({ { 7, 1, 7 }, { 0, 0, 1 }, 4, 4 });
         l.systems.models.add(l.systems.world.verts.verts, MESH::SKAL, { 1, 1, 1 }, vec3(0), 1.0,
                              l.width);
+        l.systems.animation =
+            Animation("assets/models/bones.fbx", l.systems.models.ms.values[0].mesh);
     });
 };

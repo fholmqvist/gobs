@@ -11,6 +11,9 @@ struct Systems {
     World world;
     Models models;
 
+    // TODO: Temporary.
+    Animation animation;
+
     void init(Level&);
     void update();
     void render(Level&);

@@ -19,7 +19,9 @@ struct Animation {
 
     std::unordered_map<std::string, BoneInfo> table;
 
-    Animation(std::string path, Mesh m);
+    Animation() = default;
+
+    Animation(std::string path, Mesh &m);
     Bone* find_bone(std::string);
     void read_missing_bones(aiAnimation* node_anim, Mesh* m);
 };
