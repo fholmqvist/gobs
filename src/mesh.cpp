@@ -6,8 +6,8 @@
 Mesh mesh_for_type(MESH type) {
     std::string file;
     switch (type) {
-        case MESH::SKAL:
-            file = "assets/models/bones.fbx";
+        case MESH::GOB:
+            file = "assets/models/gob.fbx";
             break;
         default:
             log_dang("Unrecognized mesh type %d", type);
@@ -51,8 +51,8 @@ void set_bone_vertex_data(BoneVertex &b, size bone_index, float weight);
 Mesh mesh_from_scene_node(MESH type, const aiScene* scene, const aiNode* node) {
     u32 texture_id = 0;
     switch (type) {
-        case MESH::SKAL:
-            texture_id = SKAL_TEXTURE;
+        case MESH::GOB:
+            texture_id = GOB_TEXTURE;
             break;
         default:
             log_dang("Unrecognized mesh type %d", type);

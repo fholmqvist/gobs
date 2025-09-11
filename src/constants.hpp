@@ -24,5 +24,4 @@ extern u32 RAIL_TEXTURE;
 extern u32 RAIL_CART_TEXTURE;
 extern u32 PIPE_TEXTURE;
 
-extern u32 SKAL_TEXTURE;
 extern u32 GOB_TEXTURE;

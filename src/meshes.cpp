@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 void Meshes::init() {
-    meshes[MESH::SKAL] = mesh_for_type(MESH::SKAL);
+    meshes[MESH::GOB] = mesh_for_type(MESH::GOB);
 }
 
 Mesh Meshes::get(MESH type) {

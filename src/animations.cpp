@@ -4,7 +4,7 @@
 
 void Animations::init(Level &l) {
     animations[ANIMATION::SQUATS] =
-        Animation("assets/models/bones.fbx", l.systems.models.meshes.get_ref(MESH::SKAL));
+        Animation("assets/models/bones.fbx", l.systems.models.meshes.get_ref(MESH::GOB));
 }
 
 Animation* Animations::get(ANIMATION anim) {

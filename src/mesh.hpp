@@ -6,7 +6,7 @@
 
 enum struct MESH : u8 {
     MESH_UNKNOWN,
-    SKAL,
+    GOB,
 };
 
 struct Mesh {
