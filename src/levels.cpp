@@ -16,5 +16,6 @@ LevelF debug_level = []() {
                              l.width);
         l.systems.animation =
             Animation("assets/models/bones.fbx", l.systems.models.ms.values[0].mesh);
+        l.systems.models.ms.values[0].animator.play(&l.systems.animation);
     });
 };

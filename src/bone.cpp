@@ -1,9 +1,7 @@
 #include "bone.hpp"
 #include "assimp.hpp"
-#include <glm/matrix.hpp>
 
 Bone::Bone(std::string _name, size index, aiNodeAnim* ch) {
-
     bone_index = index;
     name = _name;
     local_transform = mat4();

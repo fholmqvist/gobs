@@ -83,7 +83,7 @@ Shader model_shader(
 
 void Models::update() {
     for (auto &m : ms.values) {
-        m.animator.update();
+        m.update();
     }
 }
 

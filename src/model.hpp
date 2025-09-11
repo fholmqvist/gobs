@@ -13,5 +13,6 @@ struct Model {
     Animator animator;
 
     Model(MESH, vec3 pos, vec3 rot, float scale);
+    void update();
     void move(vec2 diff, float floor_y, vec3 floor_norm);
 };

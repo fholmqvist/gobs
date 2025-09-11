@@ -11,6 +11,10 @@ Model::Model(MESH _type, vec3 _pos, vec3 _rot, float _scale) {
     scale = _scale;
 }
 
+void Model::update() {
+    animator.update();
+}
+
 static inline void pitch_roll_from_up_normal(vec3 n, float* out_pitch, float* out_roll) {
     vec3 u = normalize(vec3{ n[0], n[1], n[2] });
 
