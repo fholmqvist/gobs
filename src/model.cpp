@@ -45,6 +45,6 @@ void Model::move(vec2 diff, float floor_y, vec3 floor_norm) {
     float pitch_local = cy * pitch_world - sy * roll_world;
     float roll_local = sy * pitch_world + cy * roll_world;
 
-    rot[0] = pitch_local - DEG2RAD(90);
+    rot[0] = pitch_local;
     rot[2] = roll_local;
 }
