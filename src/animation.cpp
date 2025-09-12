@@ -5,29 +5,29 @@
 
 void read_hierarchy_data(aiNode* src, AssimpNodeData &dst);
 
-Animation::Animation(std::string path, Mesh &m) {
-    Assimp::Importer import;
+Animation::Animation(const aiScene* scene, const aiAnimation* anim, Mesh& m) {
+    // Assimp::Importer import;
 
-    const aiScene* scene = import.ReadFile(
-        path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GlobalScale);
+    // const aiScene* scene = import.ReadFile(
+    //     path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GlobalScale);
 
-    if (!scene) {
-        log_dang("Missing model file %s", path.c_str());
-    } else if (!scene->mRootNode) {
-        log_dang("%s: No root node (file may contain only animations or skeletons)", path.c_str());
-    } else if (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
-        log_dang("%s: Incomplete scene (meshes: %u, materials: %u, animations: %u)", path.c_str(),
-                 scene->mNumMeshes, scene->mNumMaterials, scene->mNumAnimations);
-    } else if (scene->mNumAnimations == 0) {
-        log_dang("%s: no animations", path.c_str());
-    }
+    // if (!scene) {
+    //     log_dang("Missing model file %s", path.c_str());
+    // } else if (!scene->mRootNode) {
+    //     log_dang("%s: No root node (file may contain only animations or skeletons)", path.c_str());
+    // } else if (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
+    //     log_dang("%s: Incomplete scene (meshes: %u, materials: %u, animations: %u)", path.c_str(),
+    //              scene->mNumMeshes, scene->mNumMaterials, scene->mNumAnimations);
+    // } else if (scene->mNumAnimations == 0) {
+    //     log_dang("%s: no animations", path.c_str());
+    // }
 
-    // TODO:
-    size anim_number = scene->mNumAnimations == 1 ? 0 : scene->mNumAnimations - 1;
-    aiAnimation* node_anim = scene->mAnimations[anim_number];
+    // // TODO:
+    // size anim_number = scene->mNumAnimations == 1 ? 0 : scene->mNumAnimations - 1;
+    // aiAnimation* node_anim = scene->mAnimations[anim_number];
 
-    duration = (float)node_anim->mDuration;
-    tps = (float)node_anim->mTicksPerSecond;
+    duration = (float)anim->mDuration;
+    tps = (float)anim->mTicksPerSecond;
 
     global_inverse = to_glm(scene->mRootNode->mTransformation);
     global_inverse = glm::inverse(global_inverse);
@@ -35,7 +35,7 @@ Animation::Animation(std::string path, Mesh &m) {
     root_node.transform = mat4(1);
 
     read_hierarchy_data(scene->mRootNode, root_node);
-    read_missing_bones(node_anim, &m);
+    read_missing_bones(anim, &m);
 }
 
 Bone* Animation::find_bone(std::string name) {
@@ -47,7 +47,7 @@ Bone* Animation::find_bone(std::string name) {
     return nullptr;
 }
 
-void Animation::read_missing_bones(aiAnimation* node_anim, Mesh* m) {
+void Animation::read_missing_bones(const aiAnimation* node_anim, Mesh* m) {
     auto mtable = m->table;
 
     for (size i = 0; i < node_anim->mNumChannels; i++) {

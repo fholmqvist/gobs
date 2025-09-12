@@ -15,7 +15,7 @@ struct Models {
 
     Models() : shader(model_shader) {};
 
-    void init();
+    void init(Animations &);
     void update();
     GID add(std::vector<WorldVertex> &grid, MESH, vec3 pos, vec3 rot, float scale, int wsize);
 };

@@ -21,7 +21,7 @@ struct Animation {
 
     Animation() = default;
 
-    Animation(std::string path, Mesh &m);
+    Animation(const aiScene* scene, const aiAnimation* anim, Mesh &m);
     Bone* find_bone(std::string);
-    void read_missing_bones(aiAnimation* node_anim, Mesh* m);
+    void read_missing_bones(const aiAnimation* node_anim, Mesh* m);
 };

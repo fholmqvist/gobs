@@ -1,10 +1,7 @@
 #include "animations.hpp"
 
-#include "level.hpp"
-
-void Animations::init(Level &l) {
-    animations[ANIMATION::SQUATS] =
-        Animation("assets/models/bones.fbx", l.systems.models.meshes.get_ref(MESH::GOB));
+void Animations::add(ANIMATION type, Animation anim) {
+    animations[type] = anim;
 }
 
 Animation* Animations::get(ANIMATION anim) {

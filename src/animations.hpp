@@ -5,12 +5,12 @@
 struct Level;
 
 enum struct ANIMATION : u8 {
-    SQUATS
+    IDLE
 };
 
 struct Animations {
     std::unordered_map<ANIMATION, Animation> animations;
 
-    void init(Level &);
+    void add(ANIMATION, Animation);
     Animation* get(ANIMATION);
 };

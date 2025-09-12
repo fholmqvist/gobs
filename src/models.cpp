@@ -81,8 +81,8 @@ Shader model_shader(
         glCullFace(GL_FRONT);
     });
 
-void Models::init() {
-    meshes.init();
+void Models::init(Animations& animations) {
+    meshes.init(animations);
 }
 
 void Models::update() {

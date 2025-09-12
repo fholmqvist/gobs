@@ -1,9 +1,10 @@
 #include "mesh.hpp"
 
+#include "animations.hpp"
 #include "assimp.hpp"
 #include "constants.hpp"
 
-Mesh mesh_for_type(MESH type) {
+Mesh mesh_for_type(MESH type, Animations &animations) {
     std::string file;
     switch (type) {
         case MESH::GOB:
@@ -43,12 +44,13 @@ Mesh mesh_for_type(MESH type) {
         log_dang("%s: no meshes found", file.c_str());
     }
 
-    return mesh_from_scene_node(type, scene, node);
+    return mesh_from_scene_node(type, scene, animations, node);
 }
 
 void set_bone_vertex_data(BoneVertex &b, size bone_index, float weight);
 
-Mesh mesh_from_scene_node(MESH type, const aiScene* scene, const aiNode* node) {
+Mesh mesh_from_scene_node(MESH type, const aiScene* scene, Animations &animations,
+                          const aiNode* node) {
     u32 texture_id = 0;
     switch (type) {
         case MESH::GOB:
@@ -143,6 +145,21 @@ Mesh mesh_from_scene_node(MESH type, const aiScene* scene, const aiNode* node) {
 
     assert(m.verts.size() > 0);
     assert(m.indices.size() > 0);
+
+    /* -------------------------------------------------------------------------- */
+    /*                                 ANIMATIONS                                 */
+    /* -------------------------------------------------------------------------- */
+
+    for (unsigned int i = 0; i < scene->mNumAnimations; i++) {
+        aiAnimation* anim = scene->mAnimations[i];
+        std::string name = anim->mName.C_Str();
+        name = name.substr(name.find('|') + 1, name.size());
+        std::transform(name.begin(), name.end(), name.begin(),
+                       [](unsigned char c) { return std::toupper(c); });
+        log_info("%s", name.data());
+
+        animations.add(ANIMATION::IDLE, Animation(scene, anim, m));
+    }
 
     return m;
 }

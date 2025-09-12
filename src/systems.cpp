@@ -5,9 +5,8 @@
 void Systems::init(Level &l) {
     world.init(l);
     liquids.init();
-    models.init();
+    models.init(animations);
     models.shader.init();
-    animations.init(l);
 }
 
 void Systems::update() {

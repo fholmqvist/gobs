@@ -2,12 +2,13 @@
 
 #include "bone.hpp"
 #include "vertices.hpp"
-#include <assimp/scene.h>
 
 enum struct MESH : u8 {
     MESH_UNKNOWN,
     GOB,
 };
+
+struct Animations;
 
 struct Mesh {
     std::vector<BoneVertex> verts;
@@ -18,5 +19,5 @@ struct Mesh {
     std::unordered_map<std::string, BoneInfo> table;
 };
 
-Mesh mesh_for_type(MESH);
-Mesh mesh_from_scene_node(MESH, const aiScene*, const aiNode*);
+Mesh mesh_for_type(MESH, Animations &);
+Mesh mesh_from_scene_node(MESH, const aiScene*, Animations&, const aiNode*);

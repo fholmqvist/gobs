@@ -1,9 +1,8 @@
 #include "meshes.hpp"
 #include "mesh.hpp"
-#include <stdexcept>
 
-void Meshes::init() {
-    meshes[MESH::GOB] = mesh_for_type(MESH::GOB);
+void Meshes::init(Animations& animations) {
+    meshes[MESH::GOB] = mesh_for_type(MESH::GOB, animations);
 }
 
 Mesh Meshes::get(MESH type) {
