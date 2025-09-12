@@ -5,7 +5,7 @@
 
 void read_hierarchy_data(aiNode* src, AssimpNodeData &dst);
 
-Animation::Animation(const aiScene* scene, const aiAnimation* anim, Mesh& m) {
+Animation::Animation(const aiScene* scene, const aiAnimation* anim, Mesh &m) {
     duration = (float)anim->mDuration;
     tps = (float)anim->mTicksPerSecond;
 
