@@ -15,6 +15,8 @@ Animation* Animations::get(ANIMATION anim) {
 ANIMATION anim_from_string(std::string str) {
     if (!str.compare("IDLE")) {
         return ANIMATION::IDLE;
+    } else if (!str.compare("WALK")) {
+        return ANIMATION::WALK;
     } else {
         throw std::runtime_error(frmt("Unrecognized animation \"%s\"", str.c_str()));
     }

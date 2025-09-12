@@ -5,7 +5,8 @@
 struct Level;
 
 enum struct ANIMATION : u8 {
-    IDLE
+    IDLE,
+    WALK
 };
 
 struct Animations {
