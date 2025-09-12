@@ -12,7 +12,7 @@ LevelF debug_level = []() {
         l.add_light({ { 5.5, 1, 1.5 }, { 0, 1, 0 }, 4, 4 });
         l.add_light({ { 1.5, 1, 5.5 }, { 1, 1, 0 }, 4, 4 });
         l.add_light({ { 5.5, 1, 5.5 }, { 0, 0, 1 }, 4, 4 });
-        l.add_model(MESH::GOB, { 1, 1, 1 }, vec3(0), 1.0);
-        l.systems.models.models.values[0].animator.play(l.systems.animations.get(ANIMATION::IDLE));
+        auto id = l.add_model(MESH::GOB, { 1, 1, 1 }, vec3(0), 1.0);
+        l.play_animation(id, ANIMATION::WALK);
     });
 };

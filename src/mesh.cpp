@@ -161,8 +161,6 @@ Mesh mesh_from_scene_node(MESH type, const aiScene* scene, Animations &animation
             continue;
         }
 
-        log_info("%s", name.data());
-
         animations.add(anim_from_string(name), Animation(scene, anim, m));
     }
 

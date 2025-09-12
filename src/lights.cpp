@@ -1,7 +1,7 @@
 #include "lights.hpp"
 
-void Lights::add(Light l) {
-    lights.add(l);
+GID Lights::add(Light l) {
+    return lights.add(l);
 }
 
 LightUBO Lights::pack(std::vector<Light> ls) {

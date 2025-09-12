@@ -23,7 +23,8 @@ struct Level {
     void update();
     void render();
 
-    void add_liquid(LIQUID, ivec4);
-    void add_light(Light);
-    void add_model(MESH type, vec3 pos, vec3 rot, float scale);
+    GID add_liquid(LIQUID, ivec4);
+    GID add_light(Light);
+    GID add_model(MESH type, vec3 pos, vec3 rot, float scale);
+    void play_animation(GID, ANIMATION);
 };

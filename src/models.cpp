@@ -81,7 +81,7 @@ Shader model_shader(
         glCullFace(GL_FRONT);
     });
 
-void Models::init(Animations& animations) {
+void Models::init(Animations &animations) {
     meshes.init(animations);
 }
 
@@ -101,4 +101,8 @@ GID Models::add(std::vector<WorldVertex> &grid, MESH type, vec3 pos, vec3 rot, f
     model.move(vec2(0), floor_y, normal);
 
     return models.add(model);
+}
+
+Model* Models::get(GID id) {
+    return models.get_ptr(id);
 }

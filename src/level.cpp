@@ -1,5 +1,6 @@
 #include "level.hpp"
 
+#include "animations.hpp"
 #include "base.hpp"
 #include "timer.hpp"
 
@@ -23,15 +24,23 @@ void Level::render() {
     systems.render(*this);
 }
 
-void Level::add_liquid(LIQUID type, ivec4 pos) {
+GID Level::add_liquid(LIQUID type, ivec4 pos) {
     systems.world.set_square(pos, TILE::WATER_GROUND);
-    systems.liquids.add(type, pos, width);
+    return systems.liquids.add(type, pos, width);
 }
 
-void Level::add_light(Light light) {
-    systems.lights.add(light);
+GID Level::add_light(Light light) {
+    return systems.lights.add(light);
 }
 
-void Level::add_model(MESH type, vec3 pos, vec3 rot, float scale) {
-    systems.models.add(systems.world.verts.verts, type, pos, rot, scale, width);
+GID Level::add_model(MESH type, vec3 pos, vec3 rot, float scale) {
+    return systems.models.add(systems.world.verts.verts, type, pos, rot, scale, width);
+}
+
+void Level::play_animation(GID id, ANIMATION anim) {
+    Model* m = systems.models.get(id);
+    if (!m) {
+        return;
+    }
+    m->animator.play(systems.animations.get(anim));
 }

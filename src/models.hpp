@@ -18,4 +18,5 @@ struct Models {
     void init(Animations &);
     void update();
     GID add(std::vector<WorldVertex> &grid, MESH, vec3 pos, vec3 rot, float scale, int wsize);
+    Model* get(GID id);
 };

@@ -41,12 +41,20 @@ template <typename T> struct Storage {
 
         meta[s_idx].idx = d_idx;
 
-        return GID{ s_idx, meta[s_idx].gen };
+        return GID{ meta[s_idx].gen, s_idx };
     }
 
     T get(GID id) {
         assert(valid(id));
         return values[meta[id.idx].idx];
+    }
+
+    T* get_ptr(GID id) {
+        if (!valid(id)) {
+            return nullptr;
+        } else {
+            return &values[meta[id.idx].idx];
+        }
     }
 
     void remove(GID id) {
@@ -73,7 +81,7 @@ template <typename T> struct Storage {
     }
 
     bool valid(GID id) {
-        if (id.idx < meta.size()) {
+        if (id.idx >= meta.size()) {
             return false;
         }
         auto m = meta[id.idx];
