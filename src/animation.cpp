@@ -6,26 +6,6 @@
 void read_hierarchy_data(aiNode* src, AssimpNodeData &dst);
 
 Animation::Animation(const aiScene* scene, const aiAnimation* anim, Mesh& m) {
-    // Assimp::Importer import;
-
-    // const aiScene* scene = import.ReadFile(
-    //     path, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GlobalScale);
-
-    // if (!scene) {
-    //     log_dang("Missing model file %s", path.c_str());
-    // } else if (!scene->mRootNode) {
-    //     log_dang("%s: No root node (file may contain only animations or skeletons)", path.c_str());
-    // } else if (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
-    //     log_dang("%s: Incomplete scene (meshes: %u, materials: %u, animations: %u)", path.c_str(),
-    //              scene->mNumMeshes, scene->mNumMaterials, scene->mNumAnimations);
-    // } else if (scene->mNumAnimations == 0) {
-    //     log_dang("%s: no animations", path.c_str());
-    // }
-
-    // // TODO:
-    // size anim_number = scene->mNumAnimations == 1 ? 0 : scene->mNumAnimations - 1;
-    // aiAnimation* node_anim = scene->mAnimations[anim_number];
-
     duration = (float)anim->mDuration;
     tps = (float)anim->mTicksPerSecond;
 

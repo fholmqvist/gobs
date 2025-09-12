@@ -156,9 +156,14 @@ Mesh mesh_from_scene_node(MESH type, const aiScene* scene, Animations &animation
         name = name.substr(name.find('|') + 1, name.size());
         std::transform(name.begin(), name.end(), name.begin(),
                        [](unsigned char c) { return std::toupper(c); });
+
+        if (name.starts_with("ARMATURE")) {
+            continue;
+        }
+
         log_info("%s", name.data());
 
-        animations.add(ANIMATION::IDLE, Animation(scene, anim, m));
+        animations.add(anim_from_string(name), Animation(scene, anim, m));
     }
 
     return m;

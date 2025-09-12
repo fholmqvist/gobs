@@ -11,3 +11,11 @@ Animation* Animations::get(ANIMATION anim) {
         throw std::runtime_error(frmt("Missing animations type %d", anim));
     }
 }
+
+ANIMATION anim_from_string(std::string str) {
+    if (!str.compare("IDLE")) {
+        return ANIMATION::IDLE;
+    } else {
+        throw std::runtime_error(frmt("Unrecognized animation \"%s\"", str.c_str()));
+    }
+}

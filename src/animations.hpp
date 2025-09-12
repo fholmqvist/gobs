@@ -14,3 +14,5 @@ struct Animations {
     void add(ANIMATION, Animation);
     Animation* get(ANIMATION);
 };
+
+ANIMATION anim_from_string(std::string str);
